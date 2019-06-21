@@ -1,5 +1,8 @@
 ## stateful handling of new transactions 
 
+It accepts all Register with 200 OK
+Creates a new transaction
+
 Due to a check for username altanai , cutom message hello is replied and  any other username is printed a diff rejection reply
 Simulate local tarffic with sipp with username randomuser
 ```
