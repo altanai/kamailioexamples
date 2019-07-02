@@ -48,12 +48,8 @@ Data Base Updated
 
 and files genrated shoudl look like
 
-/home/ubuntu# ls -lt
-total 2836
-drwxr-xr-x  4 root   root     4096 Jun 26 11:02 demoCA
--rw-r--r--  1 root   root     4408 Jun 26 11:02 kamailio1_cert.pem
--rw-r--r--  1 root   root      993 Jun 26 11:02 kamailio1_cert_req.pem
--rw-r--r--  1 root   root     1708 Jun 26 11:02 privkey.pem
+/home/ubuntu# ls 
+ demoCA  kamailio1_cert.pem kamailio1_cert_req.pem privkey.pem
 
 copy the newly created certs to their respective paths
 ```
