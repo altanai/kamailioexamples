@@ -92,3 +92,47 @@ loadmodule "websocket.so"
 
 ref : https://loadmultiplier.com/node/236
 
+
+## Kamcmd lookups
+
+Get ifno about open sockets 
+```sh
+kamcmd> core.sockets_list
+{
+	socket: {
+		proto: udp
+		address: 1.2.3.4
+		port: 5060
+		mcast: no
+		mhomed: no
+	}
+	socket: {
+		proto: tcp
+		address:  1.2.3.4
+		port: 5060
+		mcast: no
+		mhomed: no
+	}
+	socket: {
+		proto: tcp
+		address:  1.2.3.4
+		port: 80
+		mcast: no
+		mhomed: no
+	}
+	socket: {
+		proto: tls
+		address:  1.2.3.4
+		port: 5061
+		mcast: no
+		mhomed: no
+	}
+	socket: {
+		proto: tls
+		address:  1.2.3.4
+		port: 443
+		mcast: no
+		mhomed: no
+	}
+}
+```
