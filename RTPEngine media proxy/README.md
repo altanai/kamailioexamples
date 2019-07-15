@@ -21,7 +21,7 @@ UA1 -- rtp --> RTP engine --> UA2
 
 
 
-## Quick RTPengine  Installation
+## Quick RTPengine  Installation using 
 
 For detailed steps goto https://telecom.altanai.com/2018/04/03/rtp-engine-on-kamailio-sip-server/
 
@@ -78,8 +78,8 @@ starting ngcp-rtp daemon service
 log checks form syslog
 ```sh
 tail -f /var/log/syslog
-Jul  4 07:09:33 ip-172-31-90-251 rtpengine[12058]: DEBUG: timer run time = 0.000032 sec
-Jul  4 07:09:34 ip-172-31-90-251 rtpengine[12058]: DEBUG: timer run time = 0.000034 sec
+rtpengine[12058]: DEBUG: timer run time = 0.000032 sec
+rtpengine[12058]: DEBUG: timer run time = 0.000034 sec
 ...
 ```
  checks threads 
@@ -91,13 +91,88 @@ Jul  4 07:09:34 ip-172-31-90-251 rtpengine[12058]: DEBUG: timer run time = 0.000
 ## Integartion with kamailio 
 
 ```
+loadmodule "rtpengine.so"
 modparam("rtpengine", "rtpengine_sock", "udp:127.0.0.1:22222")
+
+...
+
+if (is_method("INVITE|REFER")) {
+    record_route();
+    if (has_body("application/sdp")) {
+        if (rtpengine_offer()) {
+            t_on_reply("1");
+        }
+    } else {
+        t_on_reply("2");
+    }
+
+    ...
+    
+    if (is_method("ACK") && has_body("application/sdp")) {
+            rtpengine_answer();
+    }
+
+    route(RELAY);
+}
+
+...
+
+
 ```
 
 
 ## Working 
 
+Offer 
 
+s=Bria 3 release 3.5.5 stamp 71243
+c=IN IP4 rtp_engine_ip
+t=0 0
+m=audio 51472 RTP/AVP 9 0 18 98 101
+a=rtpmap:18 G729/8000
+a=fmtp:18 annexb=yes
+a=rtpmap:98 ILBC/8000
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-15
+a=sendrecv
+", "call-id": "N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM", "received-from": [ "IP4", "sip_ua_ip" ], "from-tag": "5198f57f", "command": "offer" }
+[1563192870.452414] NOTICE: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating new call
+[1563192870.452526] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Default sink codec is G722/8000
+[1563192870.452578] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating codec handler for G722/8000
+[1563192870.452627] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Sink supports codec G722/8000
+[1563192870.452678] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating codec handler for PCMU/8000
+[1563192870.452718] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Sink supports codec PCMU/8000
+[1563192870.452757] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating codec handler for G729/8000
+[1563192870.452766] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating codec handler for ILBC/8000
+[1563192870.452820] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating codec handler for telephone-event/8000
+[1563192870.452991] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: creating send_timer
+[1563192870.453031] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: creating send_timer
+[1563192870.453068] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: creating send_timer
+[1563192870.453104] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: creating send_timer
+[1563192870.453167] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: set FILLED flag for stream rtp_engine_ip:51472
+[1563192870.453206] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: set FILLED flag for stream rtp_engine_ip:51473
+[1563192870.453850] INFO: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Replying to 'offer' from from_ip:57166 (elapsed time 0.001471 sec)
+[1563192870.453903] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Response dump for 'offer' to from_ip:57166: { "sdp": "v=0
+o=- 1563192870324300 1 IN IP4 rtp_engine_ip
+s=Bria 3 release 3.5.5 stamp 71243
+c=IN IP4 rtp_engine_pub_ip
+t=0 0
+m=audio 10052 RTP/AVP 9 0 18 98 101
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:18 G729/8000
+a=rtpmap:98 ILBC/8000
+a=rtpmap:101 telephone-event/8000
+a=fmtp:18 annexb=yes
+a=fmtp:101 0-15
+a=sendrecv
+a=rtcp:10053
+a=ice-ufrag:J2eKBWSO
+a=ice-pwd:3MjkMLYAKe3CN4rvCtQEq1twAK
+a=candidate:b2yZ1hLMPAbVI08J 1 UDP 2130706431 rtp_engine_pub_ip 10052 typ host
+a=candidate:b2yZ1hLMPAbVI08J 2 UDP 2130706430 rtp_engine_pub_ip 10053 typ host
+", "result": "ok" }
+[1563192872.000170] DEBUG:
 
 
 
