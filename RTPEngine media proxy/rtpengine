@@ -1,0 +1,4 @@
+# dbtext/rtpengine
+
+id(int,auto) setid(int) url(string) weight(int) disabled(int) stamp(int)
+:1:udp\:<rtp_engine_ip>\:2222:1:0:0

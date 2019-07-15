@@ -136,3 +136,6 @@ kamcmd> core.sockets_list
 	}
 }
 ```
+
+Ref:
+Websocket mod - http://kamailio.org/docs/modules/stable/modules/websocket.html
