@@ -136,24 +136,23 @@ a=rtpmap:98 ILBC/8000
 a=rtpmap:101 telephone-event/8000
 a=fmtp:101 0-15
 a=sendrecv
-", "call-id": "N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM", "received-from": [ "IP4", "sip_ua_ip" ], "from-tag": "5198f57f", "command": "offer" }
-[1563192870.452414] NOTICE: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating new call
-[1563192870.452526] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Default sink codec is G722/8000
-[1563192870.452578] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating codec handler for G722/8000
-[1563192870.452627] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Sink supports codec G722/8000
-[1563192870.452678] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating codec handler for PCMU/8000
-[1563192870.452718] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Sink supports codec PCMU/8000
-[1563192870.452757] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating codec handler for G729/8000
-[1563192870.452766] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating codec handler for ILBC/8000
-[1563192870.452820] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Creating codec handler for telephone-event/8000
-[1563192870.452991] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: creating send_timer
-[1563192870.453031] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: creating send_timer
-[1563192870.453068] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: creating send_timer
-[1563192870.453104] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: creating send_timer
-[1563192870.453167] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: set FILLED flag for stream rtp_engine_ip:51472
-[1563192870.453206] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: set FILLED flag for stream rtp_engine_ip:51473
-[1563192870.453850] INFO: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Replying to 'offer' from from_ip:57166 (elapsed time 0.001471 sec)
-[1563192870.453903] DEBUG: [ID="N2UyZjVlYWZhYzYwNWI5YTgyY2JmOGJkYmI0ZDMzYmM"]: Response dump for 'offer' to from_ip:57166: { "sdp": "v=0
+", "call-id": "callid", "received-from": [ "IP4", "sip_ua_ip" ], "from-tag": "5198f57f", "command": "offer" }
+[[ID="callid"]: Creating new call
+[ID="callid"]: Default sink codec is G722/8000
+[ID="callid"]: Creating codec handler for G722/8000
+[ID="callid"]: Sink supports codec G722/8000
+[ID="callid"]: Creating codec handler for PCMU/8000
+[ID="callid"]: Sink supports codec PCMU/8000
+[ID="callid"]: Creating codec handler for G729/8000
+[ID="callid"]: Creating codec handler for ILBC/8000
+[ID="callid"]: Creating codec handler for telephone-event/8000
+[ID="callid"]: creating send_timer
+[ID="callid"]: creating send_timer
+[ID="callid"]: creating send_timer
+[ID="callid"]: creating send_timer
+[ID="callid"]: set FILLED flag for stream rtp_engine_ip:51472
+[ID="callid"]: set FILLED flag for stream rtp_engine_ip:51473[ID="callid"]: Replying to 'offer' from from_ip:57166 (elapsed time 0.001471 sec)
+[1563192870.453903] DEBUG: [ID="callid"]: Response dump for 'offer' to from_ip:57166: { "sdp": "v=0
 o=- 1563192870324300 1 IN IP4 rtp_engine_ip
 s=Bria 3 release 3.5.5 stamp 71243
 c=IN IP4 rtp_engine_pub_ip
