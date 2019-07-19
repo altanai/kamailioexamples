@@ -21,7 +21,7 @@ UA1 -- rtp --> RTP engine --> UA2
 
 
 
-## Quick RTPengine  Installation using 
+## Quick RTPengine Installation using 
 
 For detailed steps goto https://telecom.altanai.com/2018/04/03/rtp-engine-on-kamailio-sip-server/
 
@@ -93,9 +93,7 @@ rtpengine[12058]: DEBUG: timer run time = 0.000034 sec
 ```
 loadmodule "rtpengine.so"
 modparam("rtpengine", "rtpengine_sock", "udp:127.0.0.1:22222")
-
 ...
-
 if (is_method("INVITE|REFER")) {
     record_route();
     if (has_body("application/sdp")) {
@@ -114,12 +112,16 @@ if (is_method("INVITE|REFER")) {
 
     route(RELAY);
 }
-
-...
-
-
 ```
 
+kamcmd reload rtpengine
+```
+kamcmd -s tcp:x.x.x.x:2046 rtpengine.reload
+```
+kamcmd check rtpengine status
+```
+kamcmd -s tcp:x.x.x.x:2046 rtpengine.show all
+```
 
 ## Working 
 
