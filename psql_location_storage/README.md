@@ -1,3 +1,7 @@
+# PSQL based Registrar with location storage 
+
+## Database all tables list create
+
  Schema |      Name       | Type  |  Owner   
 --------+-----------------+-------+----------
  public | acc             | table | postgres
