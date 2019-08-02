@@ -1,0 +1,32 @@
+x.x.x.xINFO: tls [tls_mod.c:372]: mod_init(): With ECDH-Support!
+x.x.x.xINFO: tls [tls_mod.c:375]: mod_init(): With Diffie Hellman
+x.x.x.xINFO: tls [tls_init.c:713]: init_tls_h(): compiled  with  openssl  version "OpenSSL 1.0.2g  1 Mar 2016" (0x1000207f), kerberos support: off, compression: on
+x.x.x.xINFO: tls [tls_init.c:717]: init_tls_h(): installed openssl library version "OpenSSL 1.0.2g  1 Mar 2016" (0x1000207f), kerberos support: off,  zlib compression: off
+compiler: cc -I. -I.. -I../include  -fPIC -DOPENSSL_PIC -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -m64 -DL_ENDIAN -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -Wl,-Bsymbolic-functions -Wl,-z,relro -Wa,--noexecstack -Wall -DMD32_REG_T=int -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DWHIRLPOOL_ASM -DGHASH_ASM -DECP_NISTZ256_ASM
+x.x.x.xWARNING: tls [tls_init.c:778]: init_tls_h(): openssl bug #1491 (crash/mem leaks on low memory) workaround enabled (on low memory tls operations will fail preemptively) with free memory thresholds 8912896 and 4456448 bytes
+x.x.x.xINFO: <core> [core/cfg/cfg_ctx.c:595]: cfg_set_now(): tls.low_mem_threshold1 has been changed to 8912896
+x.x.x.xINFO: <core> [core/cfg/cfg_ctx.c:595]: cfg_set_now(): tls.low_mem_threshold2 has been changed to 4456448
+x.x.x.xINFO: <core> [main.c:2669]: main(): processes (at least): 17 - shm size: 67108864 - pkg size: 8388608
+x.x.x.xINFO: <core> [core/udp_server.c:153]: probe_max_receive_buffer(): SO_RCVBUF is initially 212992
+x.x.x.xINFO: <core> [core/udp_server.c:205]: probe_max_receive_buffer(): SO_RCVBUF is finally 425984
+x.x.x.xINFO: tls [tls_domain.c:303]: ksr_tls_fill_missing(): TLSs<default>: tls_method=3
+x.x.x.xINFO: tls [tls_domain.c:315]: ksr_tls_fill_missing(): TLSs<default>: certificate='/usr/local/etc/kamailio/kamailio1_cert.pem'
+x.x.x.xINFO: tls [tls_domain.c:322]: ksr_tls_fill_missing(): TLSs<default>: ca_list='/usr/local/etc/kamailio/demoCA/cacert.pem'
+x.x.x.xINFO: tls [tls_domain.c:329]: ksr_tls_fill_missing(): TLSs<default>: crl='(null)'
+x.x.x.xINFO: tls [tls_domain.c:333]: ksr_tls_fill_missing(): TLSs<default>: require_certificate=0
+x.x.x.xINFO: tls [tls_domain.c:340]: ksr_tls_fill_missing(): TLSs<default>: cipher_list='(null)'
+x.x.x.xINFO: tls [tls_domain.c:347]: ksr_tls_fill_missing(): TLSs<default>: private_key='/usr/local/etc/kamailio/privkey.pem'
+x.x.x.xINFO: tls [tls_domain.c:351]: ksr_tls_fill_missing(): TLSs<default>: verify_certificate=0
+x.x.x.xINFO: tls [tls_domain.c:354]: ksr_tls_fill_missing(): TLSs<default>: verify_depth=9
+x.x.x.xNOTICE: tls [tls_domain.c:1087]: ksr_tls_fix_domain(): registered server_name callback handler for socket [:0], server_name='<default>' ...
+x.x.x.xINFO: tls [tls_domain.c:707]: set_verification(): TLSs<default>: No client certificate required and no checks performed
+x.x.x.xINFO: tls [tls_domain.c:303]: ksr_tls_fill_missing(): TLSc<default>: tls_method=12
+x.x.x.xINFO: tls [tls_domain.c:315]: ksr_tls_fill_missing(): TLSc<default>: certificate='(null)'
+x.x.x.xINFO: tls [tls_domain.c:322]: ksr_tls_fill_missing(): TLSc<default>: ca_list='(null)'
+x.x.x.xINFO: tls [tls_domain.c:329]: ksr_tls_fill_missing(): TLSc<default>: crl='(null)'
+x.x.x.xINFO: tls [tls_domain.c:333]: ksr_tls_fill_missing(): TLSc<default>: require_certificate=0
+x.x.x.xINFO: tls [tls_domain.c:340]: ksr_tls_fill_missing(): TLSc<default>: cipher_list='(null)'
+x.x.x.xINFO: tls [tls_domain.c:347]: ksr_tls_fill_missing(): TLSc<default>: private_key='(null)'
+x.x.x.xINFO: tls [tls_domain.c:351]: ksr_tls_fill_missing(): TLSc<default>: verify_certificate=0
+x.x.x.xINFO: tls [tls_domain.c:354]: ksr_tls_fill_missing(): TLSc<default>: verify_depth=9
+x.x.x.xINFO: tls [tls_domain.c:710]: set_verification(): TLSc<default>: Server MAY present invalid certificate
