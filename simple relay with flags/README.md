@@ -1,3 +1,4 @@
+# Simple Relay SIP server 
 
 ## common configuration errors
 
@@ -38,7 +39,7 @@ listen = MY_TCP_ADDR advertise MY_EXTERNAL_IP:MY_TCP_PORT
  0(5316) ERROR: <core> [core/pvapi.c:1107]: pv_parse_spec2(): wrong char [m/109] in [$rm] at [2 (0)]
  0(5316) ERROR: xlog [xlog.c:513]: xdbg_fixup_helper(): wrong format[ method ($rm) r-uri ($ru) form $fu ]
 ```
-solution : if you are using xlog to print psuedu varoable make sure the pv and xlog module are loaded and in correct order such as 
+**solution** : if you are using xlog to print psuedu varoable make sure the pv and xlog module are loaded and in correct order such as 
 ```
 
 loadmodule "tm.so"
@@ -83,7 +84,6 @@ X-Lite    59681 altanaibisht   35u  IPv4 0x252377c03b3ebbbb      0t0  TCP localh
 X-Lite    59681 altanaibisht   52u  IPv4 0x252377c04ca09d03      0t0  UDP *:authentx
 X-Lite    59681 altanaibisht   55u  IPv4 0x252377c04559123b      0t0  TCP *:authentx (LISTEN)
 X-Lite    59681 altanaibisht   66u  IPv4 0x252377c044e6323b      0t0  TCP 192.168.1.120:52533->x-x-x-x:https (CLOSED)
-
 
 
 
