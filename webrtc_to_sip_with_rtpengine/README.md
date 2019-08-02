@@ -1,6 +1,6 @@
 # Kamailio configuration supports Webrtc-> sip , sip->webrtc and webrtc-> webrtc
 
-features 
+Features 
 - Register
 - sanity checks
 - auth
@@ -75,21 +75,21 @@ a=sendrecv.
 
 ### SIP -> webrtc 
 
-
+-tbd
 
 ## Debug
 
-Issues :  0(2707) ERROR: tls [tls_init.c:839]: tls_check_sockets(): TLSs<x.x.x.x:5061>: No listening socket found
+**Issues** :  0(2707) ERROR: tls [tls_init.c:839]: tls_check_sockets(): TLSs<x.x.x.x:5061>: No listening socket found
  0(2707) ERROR: <core> [core/sr_module.c:898]: init_mod(): Error while initializing module tls (/usr/local/lib64/kamailio/modules/tls.so)
 ERROR: error while initializing modules
 CRITICAL: tls [tls_locking.c:103]: locking_f(): locking (callback): invalid lock number:  1 (range 0 - 0), called from err.c:375
  0(2673) ERROR: <core> [core/daemonize.c:303]: daemonize(): Main process exited before writing to pipe
-Solution : check for lsietning socket address 
+**Solution** : check for lsietning socket address 
 
 
-Issue :  tls_err_ret(): TLS accept:error:14094416:SSL routines:ssl3_read_bytes:sslv3 alert certificate unknown
+**Issue** :  tls_err_ret(): TLS accept:error:14094416:SSL routines:ssl3_read_bytes:sslv3 alert certificate unknown
 tcp_read_req(): ERROR: tcp_read_req: error reading - c: 0x7ff63bb55e58 r: 0x7ff63bb55ed8 (-1)
-Solution : In tls.cfg
+**Solution** : In tls.cfg
 ```
 [client:default]
 verify_certificate = no
@@ -97,6 +97,8 @@ require_certificate = no
 ```
 Can also changes the TLS methods to SSLv23 so that any of the SSLv2, SSLv3 and TLSv1 or newer methods will be accepted.
 
+**Issue** : 
+JsSIP:ERROR:RTCSession emit "peerconnection:setremotedescriptionfailed" [error:DOMException: Failed to execute 'setRemoteDescription' on 'RTCPeerConnection': Failed to set remote offer sdp: SDES and DTLS-SRTP cannot be enabled at the same time.]
 
 Ref :
 TLS Module - https://kamailio.org/docs/modules/devel/modules/tls.html
