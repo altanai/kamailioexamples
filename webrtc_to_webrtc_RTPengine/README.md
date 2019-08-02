@@ -32,22 +32,22 @@ PORT_MAX=60000
 
 ## Debug help
 
-Issues : CRIT: Fatal error: Bad command line: Key file does not start with a group
-solution : add a group like [rtpengine] to the header of the file 
+**Issues 1** : CRIT: Fatal error: Bad command line: Key file does not start with a group
+**solution** : add a group like [rtpengine] to the header of the file 
 
-Issues : CRIT: Fatal error: Missing option --interface
-solution : Add interface from formats 
+**Issues 2** : CRIT: Fatal error: Missing option --interface
+**solution** : Add interface from formats, such as 
 a single interface:
 ```
 interface = 123.234.345.456
 ```
 separate multiple interfaces with semicolons:
 ```
-interface = internal/12.23.34.45;external/23.34.45.54
+interface = internal/10.20.30.40;external/123.234.345.456
 ```
 for different advertised address:
 ```
 interface = 12.23.34.45!23.34.45.56
 ```
-Issue : CRIT: Fatal error: Missing option --listen-tcp, --listen-udp or --listen-ng
-Solution : Add listen option 
+**Issue 3**: CRIT: Fatal error: Missing option --listen-tcp, --listen-udp or --listen-ng
+**Solution** : Add listen option 
