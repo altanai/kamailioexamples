@@ -1,7 +1,23 @@
 # Record Routing
 
-## To setup a call , use sipp UAS server
+All requests sent within a dialog are by default sent directly from one user agent to the other. Only requests outside a dialog traverse SIP proxies. 
+However in some situations SIP proxy need to stay on the path of all further messages such as BYE for accounting and CDR generation, or NAT control accross firewalls
 
+Record routing allows the proxies to stay on the path of all further messages ( request and repsosnes ).
+Thsi is acheived via Record-Route header which contains the address of the proxy.
+
+## Strict versus Loose Routing
+
+### strict routing
+RFC2543 
+Rewrite the Request-URI which will contained URI of the next hop (which can be either next proxy server which inserted Record-Route header field or destination user agent). The original Request-URI was saved as the last Route header field.
+
+### Loose routing
+RFC3261
+Request-URI is always URI of the destination user agent.
+The message is sent to the URI from the topmost Route header field.
+
+## To setup a call , use sipp UAS server
 
 setup uas server on ip_addr on lets say port 5069
 ```
