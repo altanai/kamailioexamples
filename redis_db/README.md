@@ -1,4 +1,4 @@
-## Redis Cacahe for quick storage and retrival 
+# Redis Cache for quick storage and retrival 
 
 db_redis module - provides DB APIv1 connector for the Redis server 
 
