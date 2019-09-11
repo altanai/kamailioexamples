@@ -1,0 +1,8 @@
+#!substdef "!CORE_IP!10.20.30.40!g"
+#!substdef "!CORE_PORT!5060!g"
+
+#!substdef "!EDGE_IP!20.30.40.50!g"
+#!substdef "!UDP_PORT!5060!g"
+
+#!substdef "!RTPENGINE_IP!130.40.50.60!g"
+#!substdef "!RTPENGINE_PORT!22222!g"
