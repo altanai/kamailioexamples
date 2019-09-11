@@ -347,6 +347,16 @@ ERR: [ogi3dpopec8u56dffe3s]: Call start seems to exceed call stop
 ```
 **Solution** : -tbd
 
+**Issue7** : TCP/TLS connection (id: 0) for WebSocket could not be found and could not create Via header 
+```
+WARNING: <core> [core/msg_translator.c:2811]: via_builder(): TCP/TLS connection (id: 0) for WebSocket could not be found
+ERROR: <core> [core/msg_translator.c:2003]: build_req_buf_from_sip_req(): could not create Via header
+ERROR: tm [t_fwd.c:476]: prepare_new_uac(): could not build request
+```
+**Solution**:
+
+
+
 Ref :
 TLS module - https://kamailio.org/docs/modules/5.3.x/modules/tls.html#tls.p.tls_force_run
 TLS debugging - https://www.kamailio.org/wiki/tutorials/tls/testing-and-debugging
