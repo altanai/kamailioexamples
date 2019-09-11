@@ -2,6 +2,15 @@
 ## sipwise RTPengine 
 
 Sipwise NGCP rtpengine is a proxy for RTP traffic and other UDP based media traffic.
+esentially it is a Kernel-based packet controlled by sip proxy server usually on UDP port 22222
+it maintains a pair of ports on public interface for each media stream audio or video
+one pair on odd port numbers for the media data ( RTP) , and one pair on the next even port numbers for meta data (RTCP)
+
+When the media streams are negotiated, rtpengine opens the ports in user-space and starts relaying the packets to the addresses announced by the endpoints.
+
+When NAT is applied , sip packets may come from a diff source address than declared in SDP, in such a case source address is implicitly changed to the address the packets are received from.
+
+Once the call is established and the rtpengine has received media packets from both endpoints for this call, the media stream is pushed into the kernel and is then handled by a custom Sipwise iptables module to increase the throughput of the system and to reduce the latency of media packets. 
 
 ## steps 
 * step 1 : Setup registrar
@@ -278,7 +287,7 @@ a=candidate:b2yZ1hLMPAbVI08J 2 UDP 2130706430 rtp_engine_pub_ip 10053 typ host
 
 ## Debugging 
 
-**Issue** : unknowdn codecs 
+**Issue1** : unknowdn codecs 
 ```
 [1564587040.078220] INFO: [ogi3dpopec8u56dffe3s]: --- Tag 'ufhj8jv9hg', created 0:00 ago for branch '', in dialogue with ''
 [1564587040.078228] INFO: [ogi3dpopec8u56dffe3s]: ------ Media #1 (audio over UDP/TLS/RTP/SAVPF) using unknown codec
@@ -333,7 +342,6 @@ a=rtpmap:112 telephone-event/32000
 a=rtpmap:113 telephone-event/16000
 a=rtpmap:126 telephone-event/8000
 ```
-
 
 Ref : 
 sipwise RTP engine https://github.com/sipwise/rtpengine
