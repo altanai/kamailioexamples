@@ -28,3 +28,36 @@ mysql> desc acc_cdrs;
 | duration   | float(10,3)      | NO   |     | 0.000               |                |
 +------------+------------------+------+-----+---------------------+----------------+
 ```
+
+## Maintaining dialog variables for reporting 
+
+**Call start Time**
+
+can set call_start_time avp varaible when INVITE from one end is recived 
+```
+headers.sets("$avp(call_start_time)", current_time)
+```
+later be converted to dialog varaible on 200 OK received from other end client 
+```
+local call_start_time = headers.get("$avp(call_start_time)") or "0"
+```
+now this can be used else where in the program till dialog exists 
+
+**call_ring_time**
+
+simillarly set call_ring_time if on reply route response_code > 100 and response_code < 300
+
+**call_end_time**
+
+set on reiving BYE or any other termination event as "dialog:end" or "dialog:failed"
+
+At the time of reporting gather the varaibles and values such as 
+```
+local call_start_time = headers.get("$dlg_var(call_start_time)") or headers.get("$avp(call_start_time)") 
+local call_ring_time = headers.get("$dlg_var(call_ring_time)") or headers.get("$avp(call_ring_time)") 
+local call_end_time = headers.get("$dlg_var(call_end_time)") or headers.get("$avp(call_end_time)") 
+```
+
+**call_duration**
+
+local call_duration = call_end_time - call_start_time 
