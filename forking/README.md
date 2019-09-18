@@ -34,3 +34,57 @@ adds to request a new destination set that includes the highest priority contact
 **t_next_contact_flow()**
 
 adds a new branch to the request that includes the first contact from contact_flows_avp that matches the +sip.instance value of the flow that has failed. Upon each call, Request URI is rewritten with the contact. The used contact is removed from contact_flows_avp.
+
+## Debugging
+
+**Issue1**  ERROR: dialog [dlg_handlers.c:503]: dlg_onreply(): missing TAG param in TO hdr :-/
+**solution**  After inspection of 200 message we can see that it misses the tag ahead of To header 
+
+SIP/2.0 200 OK.
+Via: SIP/2.0/UDP y.y.y.y:5060;branch=z9hG4bK32b3.18f1ec7de2b150859efcf052bef016bd.1.
+From: <sip:2222222222@x.x.x.x>;tag=6bc95850.
+To: <sip:18552702852@y.y.y.y:5077>.
+Call-ID: 99140NWIyNGJlMTFhYTJhNGI4NjJiZmQyY2ZlODViNTM5MDQ.
+CSeq: 1 INVITE.
+Contact: <sip:127.0.1.1:5077;transport=UDP>.
+Content-Length: 0.
+
+A correct SIP 200 ok would be 
+
+U y.y.y.y:5077 -> y.y.y.y:5060
+SIP/2.0 200 OK.
+Via: SIP/2.0/UDP y.y.y.y:5060;branch=z9hG4bKcd78.edfd5d41eed4ad1a9983b6085c930464.1.
+From: <sip:2222222222@x.x.x.x>;tag=e84b2c42.
+To: <sip:18552702852@y.y.y.y:5077>;tag=7568SIPpTag011.
+Call-ID: 99140NjJkODE4MmYyMjA2ODRkZDlkZDBmZGQ3NDEyZjI1MjQ.
+CSeq: 1 INVITE.
+Contact: <sip:127.0.1.1:5077;transport=UDP>.
+Content-Type: application/sdp.
+Content-Length:   129.
+
+Also show in SIPP uas 200 ok construction 
+
+```xml
+<send>
+  <![CDATA[
+  SIP/2.0 200 OK
+  [last_Via:]
+  [last_From:]
+  [last_To:];tag=[call_number]
+  [last_Call-ID:]
+  [last_CSeq:]
+  [last_Record-route:]
+  Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+  Content-Type: application/sdp
+  Content-Length: 0
+
+  v=0
+  o=user1 53655765 2353687637 IN IP[local_ip_type] [local_ip]
+  s=-
+  c=IN IP[media_ip_type] [media_ip]
+  t=0 0
+  m=audio [media_port] RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+  ]]>
+</send>
+```
