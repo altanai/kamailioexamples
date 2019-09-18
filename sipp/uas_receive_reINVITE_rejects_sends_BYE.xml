@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <scenario name="Basic UAS responder">
 
+
+<!-- receive INVITE , set session ____________________________________________ -->
+
 <recv request="INVITE" crlf="true">
 
   <action>
@@ -39,6 +42,9 @@
 <recv request="ACK" crlf="true"></recv>
 
 
+
+<!-- receive reINVITE , reject with 503 Service unavailable _______________________ -->
+
 <recv request="INVITE" crlf="true"> </recv>
 
 <send retrans="500">
@@ -56,6 +62,10 @@
  </send>
 
 <recv request="ACK"  crlf="true"></recv>
+
+
+
+<!-- send BYE ____________________________________________ -->
 
  <send retrans="500">
   <![CDATA[

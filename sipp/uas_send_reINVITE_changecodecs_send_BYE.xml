@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE scenario SYSTEM "sipp.dtd">
 
-<scenario name="uas_send_UPDATE">
+<scenario name="uas_send_reINVITE_changecodecs_send_BYE">
 
-  <!-- receive INVITE , set session ____________________________________________ -->
 
-  <!-- By adding rrs="true" (Record Route Sets), the route sets         -->
-  <!-- are saved and used for following messages sent. Useful to test   -->
-  <!-- against stateful SIP proxies/B2BUAs.                             -->
+<!-- get INVITE , set session  ____________________________________________ -->
+
     <recv request="INVITE" crlf="true">
     <action>
         <ereg regexp="sip:(.*)>" search_in="hdr" header="Contact" assign_to="4,5"/>
@@ -62,19 +60,21 @@
   </recv>
 
 
-   <pause milliseconds="4000"/>
+    <pause milliseconds="10000"/>
 
-  <!-- sent UPDATE  ____________________________________________ -->
+
+
+<!-- send reINVITE change codec from PCMU 0 to PCMA 8 _______________ -->
+
     <send retrans="500">
-
      <![CDATA[
 
-     UPDATE sip:[$5] SIP/2.0
-     Via: SIP/2.0/UDP [local_ip]:[local_port];branch=z9hG4bK1489807744192936848
+     INVITE sip:[$5] SIP/2.0
+     Via: SIP/2.0/UDP [local_ip]:[local_port];branch=[branch]
      From[$4]
      To[$3]
      Call-ID: [call_id]
-     CSeq: [cseq] UPDATE
+     CSeq: [cseq] INVITE
      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
      Max-Forwards: 70
      User-Agent: SIPp/WinXP
@@ -86,14 +86,54 @@
      s=-
      c=IN IP[media_ip_type] [media_ip]
      t=0 0
-     m=audio [media_port] RTP/AVP 0
-     a=rtpmap:0 PCMU/8000
+     m=audio [media_port] RTP/AVP 8
+     a=rtpmap:8 PCMA/8000
 
     ]]>
   </send>
 
+  <recv response="100" crlf="true">
+  </recv>
+
   <recv response="200" crlf="true">
   </recv>
+
+  <send retrans="500">
+
+     <![CDATA[
+
+     ACK sip:[$5] SIP/2.0
+     Via: SIP/2.0/TCP [local_ip]:[local_port];branch=[branch]
+     From[$4]
+     To[$3]
+     Call-ID: [call_id]
+     CSeq: [cseq] ACK
+     Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+     Max-Forwards: 70
+
+    ]]>
+  </send>
+
+
+<!-- send BYE  ____________________________________________ -->
+
+  <recv request="BYE">
+  </recv>
+
+   <send retrans="500">
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Length: 0
+
+    ]]>
+  </send>
 
 
   <!-- definition of the response time repartition table (unit is ms)   -->
@@ -103,3 +143,5 @@
   <CallLengthRepartition value="10, 50, 100, 500, 1000, 5000, 10000"/>
 
 </scenario>
+
+

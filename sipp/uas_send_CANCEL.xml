@@ -1,7 +1,11 @@
 ?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE scenario SYSTEM "sipp.dtd">
 
-<scenario name="Basic UAS responder">
+<scenario name="uas_send_CANCEL">
+
+
+<!-- receive INVITE , set session ____________________________________________ -->
+
   <!-- By adding rrs="true" (Record Route Sets), the route sets         -->
   <!-- are saved and used for following messages sent. Useful to test   -->
   <!-- against stateful SIP proxies/B2BUAs.                             -->
@@ -60,6 +64,9 @@
   -->
    <pause milliseconds="4000"/>
 
+
+<!-- send CANCEL ____________________________________________ -->
+
    <send retrans="500">
 
     <![CDATA[
@@ -75,8 +82,7 @@
     ]]>
   </send>
 
-  <recv response="200" crlf="true">
-  </recv>
+  <recv response="200" crlf="true"> </recv>
 
 
   <!-- definition of the response time repartition table (unit is ms)   -->
