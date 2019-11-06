@@ -3,7 +3,7 @@
 Securinng signalling using TLS certificates to provide privacy to voip calls over public internet.
 I have used self signed certificate in this exmaple which is ok for dev enviornment for staging , beta or production env use third party certificate provider ( Letsencrypt etc , I will add more on that later )
 
-## Steps 
+## Steps for TLS module in kamailio
 
 Build tls module in kamailio src 
 ```

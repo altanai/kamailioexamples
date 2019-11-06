@@ -11,9 +11,41 @@ Example:
    On the same host, run SIPp with embedded client (uac) scenario:
      ./sipp -sn uac 127.0.0.1
 
- 
-## Available options:
+## Building certs for TLS based sipp UAS server
 
+make master dir for all certs 
+```
+mkdir certs 
+chmod 0700 certs
+cd certs
+```
+make CA folder, create cert and check
+```
+mkdir demoCA
+cd demoCA
+mkdir newcerts
+echo '01' > serial
+touch index.txt
+openssl req -new -x509 -extensions v3_ca -keyout key.pem -out cert.pem -days 3650
+584  openssl x509 -in cert.pem -noout -text
+585  openssl x509 -in cert.pem -noout -dates
+586  openssl x509 -in cert.pem -noout -purpose
+```
+make domain folder and create the certs for the doamin from parent and check
+```
+cd ..
+mkdir 10.10.10.10
+cd ../..
+openssl ca -days 730 -out 10.10.10.10/cert.pem -keyfile demoCA/key.pem -cert demoCA/cert.pem -infiles 10.10.10.10/req.pem
+openssl x509 -in 10.10.10.10/cert.pem -noout -text
+```
+
+Run sipp
+```
+sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls_cert /home/ubuntu/certs/10.10.10.10/cert.pem  -i 10.10.10.10
+```
+
+## Available options:
 
 *** Scenario file options:
 
