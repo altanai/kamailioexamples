@@ -1,3 +1,9 @@
+--
+-- Created by IntelliJ IDEA.
+-- User: altanai ( @altanai )
+-- Date: 2019-11-14
+-- KamailioExmaples
+--
 -- Kamailio - equivalent of routing blocks in Lua
 -- KSR - the new dynamic object exporting Kamailio functions
 -- sr - the old static object exporting Kamailio functions
