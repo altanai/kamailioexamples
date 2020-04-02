@@ -40,9 +40,13 @@ openssl ca -days 730 -out 10.10.10.10/cert.pem -keyfile demoCA/key.pem -cert dem
 openssl x509 -in 10.10.10.10/cert.pem -noout -text
 ```
 
-Run sipp
+Run sipp UAS
 ```
 sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls_cert /home/ubuntu/certs/10.10.10.10/cert.pem  -i 10.10.10.10
+```
+Run sipp UAC
+```
+sipp 10.10.10.10:5077 -s 1234567890 -sn uac -t l1  -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls_cert /home/ubuntu/certs/10.10.10.10/cert.pem
 ```
 
 ## Available options:

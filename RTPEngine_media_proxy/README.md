@@ -115,11 +115,41 @@ rtpengine[12058]: DEBUG: timer run time = 0.000032 sec
 rtpengine[12058]: DEBUG: timer run time = 0.000034 sec
 ...
 ```
+
  checks threads 
  ```
 >ps -ef | grep ngcp-rtpengine
  ```
 
+checks codecs 
+```
+INFO - *****************************
+INFO - *** supported codecs ***
+                PCMA: fully supported
+                PCMU: fully supported
+                G723: fully supported
+                G722: fully supported
+               QCELP: supported for decoding only
+                G729: supported for decoding only
+               speex: fully supported
+                 GSM: fully supported
+                iLBC: supported for decoding only
+                opus: fully supported
+              vorbis: codec supported but lacks RTP definition
+                 ac3: codec supported but lacks RTP definition
+                eac3: codec supported but lacks RTP definition
+              ATRAC3: supported for decoding only
+             ATRAC-X: supported for decoding only
+                EVRC: supported for decoding only
+               EVRC0: supported for decoding only
+               EVRC1: supported for decoding only
+                 AMR: fully supported
+              AMR-WB: fully supported
+           PCM-S16LE: codec supported but lacks RTP definition
+              PCM-U8: codec supported but lacks RTP definition
+                 MP3: codec supported but lacks RTP definition
+INFO - *****************************
+```
 
 ## Integartion with kamailio 
 
@@ -215,6 +245,10 @@ a=candidate:b2yZ1hLMPAbVI08J 2 UDP 2130706430 rtp_engine_pub_ip 10053 typ host
   -v, --version                                               Print build time and exit
   --config-file=FILE                                          Load config from this file
   --config-section=STRING                                     Config file section to use
+  --codecs                                                    Print a list of supported codecs and exit
+
+Logs realted 
+
   --log-facility=daemon|local0|...|local7                     Syslog facility to use for logging
   -L, --log-level=INT                                         Mask log priorities above this level
   -E, --log-stderr                                            Log on stderr instead of syslog
@@ -225,6 +259,14 @@ a=candidate:b2yZ1hLMPAbVI08J 2 UDP 2130706430 rtp_engine_pub_ip 10053 typ host
   -f, --foreground                                            Don't fork to background
   -t, --table=INT                                             Kernel table to use
   -F, --no-fallback                                           Only start when kernel module is available
+  
+  --log-facility-cdr=daemon|local0|...|local7                 Syslog facility to use for logging CDRs
+  --log-facility-rtcp=daemon|local0|...|local7                Syslog facility to use for logging RTCP
+  --log-facility-dtmf=daemon|local0|...|local7                Syslog facility to use for logging DTMF
+  --log-format=default|parsable                               Log prefix format
+
+Interface related 
+
   -i, --interface=[NAME/]IP[!IP]                              Local interface for RTP
   -k, --subscribe-keyspace=INT INT ...                        Subscription keyspace list
   -l, --listen-tcp=[IP:]PORT                                  TCP port to listen on
@@ -236,12 +278,19 @@ a=candidate:b2yZ1hLMPAbVI08J 2 UDP 2130706430 rtp_engine_pub_ip 10053 typ host
   --graphite-prefix=STRING                                    Prefix for graphite line
   -T, --tos=INT                                               Default TOS value to set on streams
   --control-tos=INT                                           Default TOS value to set on control-ng
+  
+  -m, --port-min=INT                                          Lowest port to use for RTP
+  -M, --port-max=INT                                          Highest port to use for RTP
+
+Timeouts 
+
   -o, --timeout=SECS                                          RTP timeout
   -s, --silent-timeout=SECS                                   RTP timeout for muted
   -a, --final-timeout=SECS                                    Call timeout
   --offer-timeout=SECS                                        Timeout for incomplete one-sided calls
-  -m, --port-min=INT                                          Lowest port to use for RTP
-  -M, --port-max=INT                                          Highest port to use for RTP
+
+Redis based 
+
   -r, --redis=[PW@]IP:PORT/INT                                Connect to Redis database
   -w, --redis-write=[PW@]IP:PORT/INT                          Connect to Redis write database
   --redis-num-threads=INT                                     Number of Redis restore threads
@@ -251,12 +300,13 @@ a=candidate:b2yZ1hLMPAbVI08J 2 UDP 2130706430 rtp_engine_pub_ip 10053 typ host
   --redis-disable-time=INT                                    Number of seconds redis communication is disabled because of errors
   --redis-cmd-timeout=INT                                     Sets a timeout in milliseconds for redis commands
   --redis-connect-timeout=INT                                 Sets a timeout in milliseconds for redis connections
+
+XMLRPC 
+
   -b, --b2b-url=STRING                                        XMLRPC URL of B2B UA
-  --log-facility-cdr=daemon|local0|...|local7                 Syslog facility to use for logging CDRs
-  --log-facility-rtcp=daemon|local0|...|local7                Syslog facility to use for logging RTCP
-  --log-facility-dtmf=daemon|local0|...|local7                Syslog facility to use for logging DTMF
-  --log-format=default|parsable                               Log prefix format
+
   -x, --xmlrpc-format=INT                                     XMLRPC timeout request format to use. 0: SEMS DI, 1: call-id only, 2: Kamailio
+
   --num-threads=INT                                           Number of worker threads to create
   --media-num-threads=INT                                     Number of worker threads for media playback
   -d, --delete-delay=INT                                      Delay for deleting a session from memory.
@@ -266,6 +316,9 @@ a=candidate:b2yZ1hLMPAbVI08J 2 UDP 2130706430 rtp_engine_pub_ip 10053 typ host
   --max-load=FLOAT                                            Reject new sessions if load averages exceeds this value
   --max-cpu=FLOAT                                             Reject new sessions if CPU usage (in percent) exceeds this value
   --max-bandwidth=INT                                         Reject new sessions if bandwidth usage (in bytes per second) exceeds this value
+
+RTCP stats on Homer
+
   --homer=IP46|HOSTNAME:PORT                                  Address of Homer server for RTCP stats
   --homer-protocol=udp|tcp                                    Transport protocol for Homer (default udp)
   --homer-id=INT                                              'Capture ID' to use within the HEP protocol
@@ -273,12 +326,14 @@ a=candidate:b2yZ1hLMPAbVI08J 2 UDP 2130706430 rtp_engine_pub_ip 10053 typ host
   --recording-method=pcap|proc                                Strategy for call recording
   --recording-format=raw|eth                                  File format for stored pcap files
   --iptables-chain=STRING                                     Add explicit firewall rules to this iptables chain
-  --codecs                                                    Print a list of supported codecs and exit
   --scheduling=default|none|fifo|rr|other|batch|idle          Thread scheduling policy
   --priority=INT                                              Thread scheduling priority
   --idle-scheduling=default|none|fifo|rr|other|batch|idle     Idle thread scheduling policy
   --idle-priority=INT                                         Idle thread scheduling priority
   --log-srtp-keys                                             Log SRTP keys to error log
+
+based on mysql
+
   --mysql-host=HOST|IP                                        MySQL host for stored media files
   --mysql-port=INT                                            MySQL port
   --mysql-user=USERNAME                                       MySQL connection credentials
