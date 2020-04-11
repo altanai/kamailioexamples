@@ -115,7 +115,7 @@ sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls
    -tls_version     : Set the TLS protocol version to use (1.0, 1.1, 1.2) -- default is
                       autonegotiate
 
-*** SIPp overall behavior options:
+## SIPp overall behavior options:
 
    -v               : Display version and copyright information.
    -bg              : Launch SIPp in background mode.
@@ -142,7 +142,7 @@ sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls
    -dynamicStep     : variable value
                       Set the increment of dynamic_id variable
 
-*** Call behavior options:
+### Call behavior options:
 
    -aa              : Enable automatic 200 OK answer for INFO, NOTIFY, OPTIONS and UPDATE.
    -base_cseq       : Start value of [cseq] for each call.
@@ -181,7 +181,7 @@ sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls
    -pause_msg_ign   : Ignore the messages received during a pause defined in the scenario 
    -callid_slash_ign: Don't treat a triple-slash in Call-IDs as indicating an extra SIPp prefix.
 
-*** Injection file options:
+### Injection file options:
 
    -inf             : Inject values from an external CSV file during calls into the scenarios.
                       First line of this file say whether the data is to be read in sequence
@@ -199,7 +199,7 @@ sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls
                       assumed.
                       Use this option together with '-t ui'
 
-*** RTP behaviour options:
+### RTP behaviour options:
 
    -mi              : Set the local media IP address (default: local primary host IP address)
    -rtp_echo        : Enable RTP echo. RTP/UDP packets received on port defined by -mp are echoed
@@ -211,111 +211,149 @@ sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls
    -rtp_payload     : RTP default payload type.
    -rtp_threadtasks : RTP number of playback tasks per thread.
    -rtp_buffsize    : Set the rtp socket send/receive buffer size.
-   *** Call rate options:
+   
+### Call rate options:
 
-   -r               : Set the call rate (in calls per seconds).  This value can bechanged during
-                      test by pressing '+', '_', '*' or '/'. Default is 10.
-                      pressing '+' key to increase call rate by 1 * rate_scale,
-                      pressing '-' key to decrease call rate by 1 * rate_scale,
-                      pressing '*' key to increase call rate by 10 * rate_scale,
-                      pressing '/' key to decrease call rate by 10 * rate_scale.
+-   -r               : 
+Set the call rate (in calls per seconds).  This value can bechanged during test by pressing '+', '_', '*' or '/'. 
+Default is 10.
+    - pressing '+' key to increase call rate by 1 * rate_scale,
+    - pressing '-' key to decrease call rate by 1 * rate_scale,
+    - pressing '*' key to increase call rate by 10 * rate_scale,
+    - pressing '/' key to decrease call rate by 10 * rate_scale.
                       
-   -rp              : Specify the rate period for the call rate.  Default is 1 second and default
-                      unit is milliseconds.  This allows you to have n calls every m milliseconds
-                      (by using -r n -rp m).
-                      Example: -r 7 -rp 2000 ==> 7 calls every 2 seconds.
-                               -r 10 -rp 5s => 10 calls every 5 seconds.
-   -rate_scale      : Control the units for the '+', '-', '*', and '/' keys.
-   -rate_increase   : Specify the rate increase every -rate_interval units (default is seconds). 
-                      This allows you to increase the load for each independent logging period.
+-   -rp              : 
+Specify the rate period for the call rate.  Default is 1 second and default unit is milliseconds.  This allows you to have n calls every m milliseconds(by using -r n -rp m).
+    Example: -r 7 -rp 2000 ==> 7 calls every 2 seconds.
+           -r 10 -rp 5s => 10 calls every 5 seconds.
+
+-   -rate_scale      : 
+Control the units for the '+', '-', '*', and '/' keys.
+
+-   -rate_increase   : 
+Specify the rate increase every -rate_interval units (default is seconds). 
+This allows you to increase the load for each independent logging period.
                       Example: -rate_increase 10 -rate_interval 10s
                         ==> increase calls by 10 every 10 seconds.
-   -rate_max        : If -rate_increase is set, then quit after the rate reaches this value.
+
+-   -rate_max        : 
+
+If -rate_increase is set, then quit after the rate reaches this value.
                       Example: -rate_increase 10 -rate_max 100
                         ==> increase calls by 10 until 100 cps is hit.
-   -rate_interval   : Set the interval by which the call rate is increased. Defaults to the value
-                      of -fd.
-   -no_rate_quit    : If -rate_increase is set, do not quit after the rate reaches -rate_max.
-   -l               : Set the maximum number of simultaneous calls. Once this limit is reached,
-                      traffic is decreased until the number of open calls goes down. Default:
-                        (3 * call_duration (s) * rate).
-   -m               : Stop the test and exit when 'calls' calls are processed
-   -users           : Instead of starting calls at a fixed rate, begin 'users' calls at startup,
-                      and keep the number of calls constant.
 
-*** Retransmission and timeout options:
+-   -rate_interval   : 
+Set the interval by which the call rate is increased. Defaults to the value  of -fd.
 
-   -recv_timeout    : Global receive timeout. Default unit is milliseconds. If the expected message
-                      is not received, the call times out and is aborted.
-   -send_timeout    : Global send timeout. Default unit is milliseconds. If a message is not sent
-                      (due to congestion), the call times out and is aborted.
-   -timeout         : Global timeout. Default unit is seconds.  If this option is set, SIPp quits
-                      after nb units (-timeout 20s quits after 20 seconds).
-   -timeout_error   : SIPp fails if the global timeout is reached is set (-timeout option
-                      required).
-   -max_retrans     : Maximum number of UDP retransmissions before call ends on timeout.  Default
-                      is 5 for INVITE transactions and 7 for others.
-   -max_invite_retrans: Maximum number of UDP retransmissions for invite transactions before call
+-   -no_rate_quit    : 
+If -rate_increase is set, do not quit after the rate reaches -rate_max.
+
+-   -l               : 
+
+Set the maximum number of simultaneous calls. Once this limit is reached, traffic is decreased until the number of open calls goes down. Default:
+ (3 * call_duration (s) * rate).
+
+-   -m               : 
+Stop the test and exit when 'calls' calls are processed
+
+-   -users           : 
+Instead of starting calls at a fixed rate, begin 'users' calls at startup, and keep the number of calls constant.
+
+### Retransmission and timeout options:
+
+-   -recv_timeout    : 
+Global receive timeout. Default unit is milliseconds. If the expected message is not received, the call times out and is aborted.
+
+-   -send_timeout    : 
+Global send timeout. Default unit is milliseconds. If a message is not sent (due to congestion), the call times out and is aborted.
+
+-   -timeout         : 
+Global timeout. Default unit is seconds.  If this option is set, SIPp quits after nb units (-timeout 20s quits after 20 seconds).
+
+-   -timeout_error   : 
+SIPp fails if the global timeout is reached is set (-timeout option required).
+
+-   -max_retrans     : Maximum number of UDP retransmissions before call ends on timeout.  Default      is 5 for INVITE transactions and 7 for others.
+
+-   -max_invite_retrans: Maximum number of UDP retransmissions for invite transactions before call
                       ends on timeout.
-   -max_non_invite_retrans: Maximum number of UDP retransmissions for non-invite transactions before call
+
+-   -max_non_invite_retrans: Maximum number of UDP retransmissions for non-invite transactions before call
                       ends on timeout.
-   -nr              : Disable retransmission in UDP mode.
-   -rtcheck         : Select the retransmission detection method: full (default) or loose.
-   -T2              : Global T2-timer in milli seconds
 
-*** Third-party call control options:
+-   -nr              : Disable retransmission in UDP mode.
 
-   -3pcc            : Launch the tool in 3pcc mode ("Third Party call control"). The passed IP
-                      address depends on the 3PCC role.
-                      - When the first twin command is 'sendCmd' then this is the address of the
-                        remote twin socket.  SIPp will try to connect to this address:port to send
-                        the twin command (This instance must be started after all other 3PCC
-                        scenarios).
-                         Example: 3PCC-C-A scenario.
-                      - When the first twin command is 'recvCmd' then this is the address of the
-                        local twin socket. SIPp will open this address:port to listen for twin
-                        command.
-                          Example: 3PCC-C-B scenario.
-   -master          : 3pcc extended mode: indicates the master number
-   -slave           : 3pcc extended mode: indicates the slave number
-   -slave_cfg       : 3pcc extended mode: indicates the file where the master and slave addresses
+-   -rtcheck         : Select the retransmission detection method: full (default) or loose.
+
+-   -T2              : Global T2-timer in milli seconds
+
+### Third-party call control options:
+
+-    -3pcc            : 
+Launch the tool in 3pcc mode ("Third Party call control"). The passed IP address depends on the 3PCC role.
+        - When the first twin command is 'sendCmd' then this is the address of the remote twin socket.  SIPp will try to connect to this address:port to send the twin command (This instance must be started after all other 3PCC scenarios).
+         Example: 3PCC-C-A scenario.
+        - When the first twin command is 'recvCmd' then this is the address of the local twin socket. SIPp will open this address:port to listen for twin command.
+          Example: 3PCC-C-B scenario.
+-    -master          : 3pcc extended mode: indicates the master number
+
+-   -slave           : 3pcc extended mode: indicates the slave number
+
+-   -slave_cfg       : 3pcc extended mode: indicates the file where the master and slave addresses
                       are stored
 
-*** Performance and watchdog options:
+### Performance and watchdog options:
 
-   -timer_resol     : Set the timer resolution. Default unit is milliseconds.  This option has an
-                      impact on timers precision.Small values allow more precise scheduling but
-                      impacts CPU usage.If the compression is on, the value is set to 50ms. The
-                      default value is 10ms.
-   -max_recv_loops  : Set the maximum number of messages received read per cycle. Increase this
-                      value for high traffic level.  The default value is 1000.
-   -max_sched_loops : Set the maximum number of calls run per event loop. Increase this value for
-                      high traffic level.  The default value is 1000.
-   -watchdog_interval: Set gap between watchdog timer firings.  Default is 400.
-   -watchdog_reset  : If the watchdog timer has not fired in more than this time period, then reset
-                      the max triggers counters.  Default is 10 minutes.
-   -watchdog_minor_threshold: If it has been longer than this period between watchdog executions count a
-                      minor trip.  Default is 500.
-   -watchdog_major_threshold: If it has been longer than this period between watchdog executions count a
-                      major trip.  Default is 3000.
-   -watchdog_major_maxtriggers: How many times the major watchdog timer can be tripped before the test is
-                      terminated.  Default is 10.
-   -watchdog_minor_maxtriggers: How many times the minor watchdog timer can be tripped before the test is
-                      terminated.  Default is 120.
+-   -timer_resol     
+Set the timer resolution. Default unit is milliseconds. This option has an impact on timers precision.Small values allow more precise scheduling but impacts CPU usage.If the compression is on, the value is set to 50ms. The default value is 10ms.
 
-*** Tracing, logging and statistics options:
+-   -max_recv_loops
+Set the maximum number of messages received read per cycle. Increase this value for high traffic level.  The default value is 1000.
 
-   -f               : Set the statistics report frequency on screen. Default is 1 and default unit
-                      is seconds.
-   -trace_stat      : Dumps all statistics in <scenario_name>_<pid>.csv file. Use the '-h stat'
-                      option for a detailed description of the statistics file content.
-   -stat_delimiter  : Set the delimiter for the statistics file
-   -stf             : Set the file name to use to dump statistics
-   -fd              : Set the statistics dump log report frequency. Default is 60 and default unit
-                      is seconds.
-   -periodic_rtd    : Reset response time partition counters each logging interval.
-   -trace_msg       : Displays sent and received SIP messages in <scenario file
-                      name>_<pid>_messages.log
+-   -max_sched_loops
+ Set the maximum number of calls run per event loop. Increase this value for high traffic level.  The default value is 1000.
+
+-   -watchdog_interval : 
+Set gap between watchdog timer firings.  Default is 400.
+
+-   -watchdog_reset : 
+If the watchdog timer has not fired in more than this time period, then reset the max triggers counters.  Default is 10 minutes.
+   
+-  -watchdog_minor_threshold: 
+If it has been longer than this period between watchdog executions count a minor trip.  Default is 500.
+
+-   -watchdog_major_threshold: 
+If it has been longer than this period between watchdog executions count a major trip.  Default is 3000.
+
+-   -watchdog_major_maxtriggers : 
+How many times the major watchdog timer can be tripped before the test is terminated.  Default is 10.
+
+-   -watchdog_minor_maxtriggers: 
+How many times the minor watchdog timer can be tripped before the test is terminated.  Default is 120.
+
+### Tracing, logging and statistics options:
+
+-   -f               : 
+Set the statistics report frequency on screen. Default is 1 and default unit is seconds.
+
+-   -trace_stat      : 
+Dumps all statistics in <scenario_name>_<pid>.csv file. Use the '-h stat' option for a detailed description of the statistics file content.
+
+-   -stat_delimiter  : 
+Set the delimiter for the statistics file
+
+-   -stf             : 
+Set the file name to use to dump statistics
+
+-   -fd              : 
+Set the statistics dump log report frequency. Default is 60 and default unit is seconds.
+
+-   -periodic_rtd    : 
+Reset response time partition counters each logging interval.
+
+-   -trace_msg       : 
+Displays sent and received SIP messages in <scenario file name>_<pid>_messages.log
+
    -message_file    : Set the name of the message log file.
    -message_overwrite: Overwrite the message log file (default true).
    -trace_shortmsg  : Displays sent and received SIP messages as CSV in <scenario file
@@ -350,7 +388,7 @@ sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls
    -max_log_size    : What is the limit for error, message, shortmessage and calldebug file sizes.
 
 
-Signal handling:
+### Signal handling:
 
    SIPp can be controlled using POSIX signals. The following signals
    are handled:
@@ -363,7 +401,7 @@ Signal handling:
          in background mode to know what the current status is.
          Example: kill -SIGUSR2 732
 
-Exit codes:
+### Exit codes:
 
    Upon exit (on fatal error or when the number of asked calls (-m
    option) is reached, SIPp exits with one of the following exit
