@@ -19,7 +19,7 @@ mkdir certs
 chmod 0700 certs
 cd certs
 ```
-make CA folder, create cert and check
+Make CA folder, create cert and check
 ```
 mkdir demoCA
 cd demoCA
@@ -34,12 +34,17 @@ openssl x509 -in cert.pem -noout -text
 openssl x509 -in cert.pem -noout -dates
 openssl x509 -in cert.pem -noout -purpose
 ```
-make domain folder and create the certs for the doamin from parent and check
+
+Make domain folder and create the certs for the sip domain name from parent and check
 ```
 cd ..
 mkdir 10.10.10.10
-cd ../..
+openssl req -new -nodes -keyout key.pem -out req.pem
+cd ..
 openssl ca -days 730 -out 10.10.10.10/cert.pem -keyfile demoCA/key.pem -cert demoCA/cert.pem -infiles 10.10.10.10/req.pem
+```
+Verify the generated  certificate for for SIP domain
+```
 openssl x509 -in 10.10.10.10/cert.pem -noout -text
 ```
 
@@ -412,7 +417,15 @@ Displays sent and received SIP messages in <scenario file name>_<pid>_messages.l
    -1: Fatal error
    -2: Fatal error binding a socket
 
+## Debugging 
 
-**References**
+**Issue1** The commonName field needed to be supplied and was missing
+**Solution** Given the common name while generating the certs 
 
+**Issue2**If cmake error appears such as "command not found: cmake" then </p>
+**solution**```sudo apt-get install build-essential cmake```
+
+
+
+#### References
 - https://www.kamailio.org/dokuwiki/doku.php/tls:create-certificates
