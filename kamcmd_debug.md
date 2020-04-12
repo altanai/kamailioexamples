@@ -272,3 +272,16 @@ core: pv_cache_action
 	}
 }
 ```
+
+## Issues
+
+### Issue 1 
+ERROR: connect_unix_sock: connect(/var/run/kamailio//kamailio_ctl): No such file or directory [2]
+**solution** add ctl module to kamailio config 
+```
+loadmodule "ctl.so"
+...
+modparam("ctl", "binrpc", "tcp:MY_IP_ADDR:2046")
+modparam("ctl", "binrpc", "unix:/var/run/kamailio/kamailio_ctl") # default
+```
+

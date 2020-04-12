@@ -86,3 +86,31 @@ local call_end_time = headers.get("$dlg_var(call_end_time)") or headers.get("$av
 **call_duration**
 
 local call_duration = call_end_time - call_start_time 
+
+## Creating Labels for call legs 
+
+Defining the avp 
+
+
+Adding label to rtpengine offer and answer 
+
+
+Assigning them 
+
+$avp("mos_A_label")="Aleg_label";
+$avp("mos_B_label")="Bleg_label";
+
+rtpengine[11384]: INFO: [ID="bGlLRsuZYY"]: --- Tag 'DIyZpSKza' (label 'Aleg_label'), created 0:06 ago for branch '', in dialogue with 'DHj9N85c99QQS'
+rtpengine[11384]: INFO: [ID="bGlLRsuZYY"]: ------ Media #1 (audio over RTP/AVPF) using unknown codec
+rtpengine[11384]: INFO: [ID="bGlLRsuZYY"]: --------- Port   x.x.x.x:10046 <>  z.z.z.z:22545, SSRC 0, 0 p, 0 b, 0 e, 6 ts
+rtpengine[11384]: INFO: [ID="bGlLRsuZYY"]: --------- Port   x.x.x.x:10047 <>  z.z.z.z:22546 (RTCP), SSRC 0, 0 p, 0 b, 0 e, 6 ts
+
+rtpengine[11384]: INFO: [ID="bGlLRsuZYY"]: --- Tag 'DHj9N85c99QQS' (label 'Bleg_label'), created 0:06 ago for branch '', in dialogue with 'DIyZpSKza'
+rtpengine[11384]: INFO: [ID="bGlLRsuZYY"]: ------ Media #1 (audio over RTP/AVPF) using unknown codec
+rtpengine[11384]: INFO: [ID="bGlLRsuZYY"]: --------- Port   x.x.x.x:10026 <>    y.y.y.y:29244, SSRC 0, 0 p, 0 b, 0 e, 6 ts
+rtpengine[11384]: INFO: [ID="bGlLRsuZYY"]: --------- Port   x.x.x.x:10027 <>    y.y.y.y:29245 (RTCP), SSRC 0, 0 p, 0 b, 0 e, 6 ts
+
+## Debugging
+
+**Issue 1** sctp_core_check_support(): SCTP API not enabled - if you want to use it, load sctp module
+**Solution** tbd

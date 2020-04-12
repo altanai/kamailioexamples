@@ -1,5 +1,14 @@
 # Stateful Kamailio Server with Lua prigramming and RTP engine integration 
 
+Kamailio is basically only a transaction stateful proxy, without any dialog support build in.
+To make it stateful , we add dialog support that provides awareness, 
+like storing the information in the dialog creation stage, that can be used during the whole dialog existence.
+
+**Route headers**
+Record additional dialog-related information in the routing set (Record-Route/Route headers) headers 
+They show up in all sequential requests.
+Applications are found in NAT traversal
+
 ## Install 
 
 ```

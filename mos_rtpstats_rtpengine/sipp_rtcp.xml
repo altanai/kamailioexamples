@@ -50,7 +50,6 @@
         <action>
             <ereg regexp="sip:.*@([0-9]{1,3}\.){3}[0-9]{1,3}" search_in="hdr" header="Contact:" check_it="true"
                   assign_to="6"/>
-            <exec play_pcap_audio="al1.pcap"/>
         </action>
     </recv>
 
@@ -65,17 +64,15 @@
       To: [service] <sip:[service]@192.168.1.109:[remote_port]>[peer_tag_param]
       Call-ID: [call_id]
       CSeq: 1 ACK
-      Contact: sip:zt@[local_ip]:[local_port]
       Max-Forwards: 70
+      Route:<sip:192.168.1.109;lr;ftag=[call_number];nat=yes>
       User-Agent: Test
       Content-Length: 0
 
     ]]>
     </send>
 
-    <!-- This delay can be customized by the -d command-line option       -->
-    <!-- or by adding a 'milliseconds = "value"' option here.             -->
-    <pause milliseconds="10000"/>
+    <pause milliseconds="20000"/>
 
     <!-- The 'crlf' option inserts a blank line in the statistics report. -->
     <send retrans="500">
@@ -86,9 +83,9 @@
       From: 4000 <sip:4000@companysomethingtelecom.com:[local_port]>;tag=[call_number]
       To: [service] <sip:[service]@192.168.1.109:[remote_port]>[peer_tag_param]
       Call-ID: [call_id]
-      CSeq: 2 BYE
-      Contact: sip:zt@[local_ip]:[local_port]
+      CSeq: 1 BYE
       Max-Forwards: 70
+      Route:<sip:192.168.1.109;lr;ftag=[call_number];nat=yes>
       User-Agent: Test
       Content-Length: 0
 

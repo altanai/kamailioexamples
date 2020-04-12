@@ -16,7 +16,14 @@ pkill kamailio
 ```
 
 To read more about Lua scripts for call routing on kamailip sip server 
-https://telecom.altanai.com/2018/05/08/lua-scripts-for-kamailio-routing/
+[Lua script for kamailio record Routing](https://telecom.altanai.com/2018/05/08/lua-scripts-for-kamailio-routing/)
+
+Adding route params for nating 
+```
+if KSR.rr.check_route_param("nat=yes") > 0 then
+    KSR.setbflag(FLB_NATB);
+end
+```
 
 ## KSR function used :
 

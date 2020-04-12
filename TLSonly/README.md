@@ -68,6 +68,92 @@ DEBUG: <core> [core/io_wait.h:380]: io_watch_add(): DBG: io_watch_add(0xa87960, 
 DEBUG: <core> [core/tcp_main.c:3434]: handle_tcp_child(): CONN_RELEASE  0x7fb7cc2f0190 refcnt= 1
 ```
 
+## using sipp + TLS as UAC
+
+Compile sipp from source 
+```bash
+git clone git@github.com:SIPp/sipp.git
+```
+
+using the default make instructions
+```bash
+cmake . 
+make
+```
+But for tls enabling use below : 
+
+Pre-requisites to compile SIPp are :
+    C++ Compiler
+    curses or ncurses library
+    For TLS support: OpenSSL >= 0.9.8
+    For pcap play support: libpcap and libnet
+    For SCTP support: lksctp-tools
+    For distributed pauses: Gnu Scientific Libraries
+
+For example on ubuntu system 
+For compiling 
+```
+sudo apt-get install cmake build-essential
+```
+For the optional flag
+```
+sudo apt-get install dh-autoreconf
+sudo apt-get install ncurses-dev libncurses5-dev
+```
+LibSSL like bio.h
+```
+sudo apt-get install libssl-dev
+```
+SCTP
+```
+sudo apt-get install libsctp-dev lksctp-tools
+```
+PCAP like pcap.h
+```
+sudo apt-get install libpcap-dev
+```
+
+I could not compile it on my mac system due to bio.h headr missing in openssl , I read about it for a while and looks like a lile s link issues .
+
+use  optional flags to enable features (SIP-over-TLS
+```bash
+cmake . -DUSE_SSL=1
+make
+```
+
+make key and cert 
+```bash
+openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out cert.pem
+```
+test key
+```bash
+openssl x509 -text -noout -in cert.pem
+```
+
+
+Now run by giving tls option and supplying tls key and cer in path 
+```bash
+/home/ubuntu/sipp/sipp -d 80000 \
+ -t l1 -tls_key key.pem -tls_cert cert.pem \
+ -l 1 -r 1 -rtp_echo \
+ -key MY_CALLER_NUMBER 10000000000 \
+ -sf ./sipp-outbound-trunk-rtcp.xml \
+ -m 1 \
+ -s 919999999999 telcodomain.com  \
+ -i 127.0.0.1 \
+ -trace_err /
+```
+
+
+/root/sipp/sipp -d 80000  -s 919871204072 127.0.0.1 \
+ -t l1 -tls_key /root/sipp/key.pem -tls_cert /root/sipp/cert.pem \
+ -l 1 -r 1 -rtp_echo \
+ -key MY_CALLER_NUMBER 10000000000 \
+ -sf ./sipp-outbound-trunk-rtcp.xml \
+ -m 1 \
+ -i 127.0.0.1 \
+ -trace_err 
+ 
 ## Debugging 
 
 **Issue 1** : ERROR: connect_unix_sock: connect(/var/run/kamailio//kamailio_ctl): No such file or directory [2]
@@ -85,3 +171,23 @@ and execute from source
 **Issue 2** : ERROR: tls [tls_util.h:42]: tls_err_ret(): TLS accept:error:14094416:SSL routines:ssl3_read_bytes:sslv3 alert certificate unknown
 ERROR: <core> [core/tcp_read.c:1505]: tcp_read_req(): ERROR: tcp_read_req: error reading - c: 0x7f0f56a3e440 r: 0x7f0f56a3e4c0 (-1)
 **Solution :** although if verify_certificate is no , this should not affect the call, use openssl sclient to validate the certs . tbd more details   
+
+**Issue 3** TLS error on sipp while using -t l1 option 
+To use a TLS transport you must compile SIPp with OpenSSL
+**solution**  look at instruction above to compile sipp from source instead of using readymate executables such as from brew 
+
+**Issue 4** sipp build error  sipp/include/sipp.hpp:35:10: fatal error: 'netinet/sctp.h' file not found
+**SOlution** 
+include the scttp library 
+
+**Issue 5** TLS_init_context: SSL_CTX_use_certificate_file failed
+**Solution** use tls key and cert in path
+```bash
+sipp -sn uas -p 5077 -t l1 -tls_key key.pem  -tls_cert cert.pem  -i 127.0.0.1
+```
+
+**Issue 6** Unable to connect a TCP socket.
+Use 'sipp -h' for details, errno = 107 (Transport endpoint is not connected)
+and 
+Failed to shutdown socket 7, errno = 107 (Transport endpoint is not connected)
+**solution** 

@@ -4,7 +4,7 @@ Dispatcher module can be used as stateless load balancer
 Can choose one of many load balancing and traffic dispatching algorithms
 requires the TM module if auto-discovery of active/inactive gateways is enabled 
 
-load dispatcher module 
+Load dispatcher module 
 ```
 #!define WITH_LOADBALANCE
 ...
@@ -23,7 +23,7 @@ modparam("dispatcher", "flags", 2)
 ```
 
 store all possible destinations in the AVP variable and if the selected destination fails, next one can be selected from the list.
-* AVP_DST - varaible holds list with addresses and associated properties, in the seleceted order by dispatcher algorithm
+* AVP_DST - variable holds list with addresses and associated properties, in the seleceted order by dispatcher algorithm
 * AVP_GRP - storing the group id of the destination set.
 * AVP_CNT - storing the number of destination addresses kept in dst_avp AVPs.
 * AVP_SOCK - hold the list with the sockets associated to the addresses stored in dst_avp avp.
