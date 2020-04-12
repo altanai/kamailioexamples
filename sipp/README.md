@@ -84,8 +84,7 @@ sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls
 Set the transport mode:
     - u1: UDP with one socket (default),
     - un: UDP with one socket per call,
-    - ui: UDP with one socket per IP address. The IP addresses must be defined
-    in the injection file.
+    - ui: UDP with one socket per IP address. The IP addresses must be defined in the injection file.
     - t1: TCP with one socket,
     - tn: TCP with one socket per call,
     - l1: TLS with one socket,
@@ -97,15 +96,10 @@ Set the transport mode:
 -   -i               : Set the local IP address for 'Contact:','Via:', and 'From:' headers. Default is primary host IP address.
                       
 -   -p               : Set the local port number.  Default is a random free port chosen by the system 
--   -bind_local      : Bind socket to local IP address, i.e. the local IP address is used as the
-                      source IP address.  If SIPp runs in server mode it will only listen on the
-                      local IP address instead of all IP addresses.
+-   -bind_local      : Bind socket to local IP address, i.e. the local IP address is used as the  source IP address.  If SIPp runs in server mode it will only listen on the local IP address instead of all IP addresses.
 -   -ci              : Set the local control IP address
 -   -cp              : Set the local control port number. Default is 8888.
--   -max_socket      : Set the max number of sockets to open simultaneously. This option is
-                      significant if you use one socket per call. Once this limit is reached,
-                      traffic is distributed over the sockets already opened. Default value is
-                      50000
+-   -max_socket      : Set the max number of sockets to open simultaneously. This option is significant if you use one socket per call. Once this limit is reached, traffic is distributed over the sockets already opened. Default value is 50000
 -   -max_reconnect   : Set the the maximum number of reconnection.
 -   -reconnect_close : Should calls be closed on reconnect?
 -   -reconnect_sleep : How long (in milliseconds) to sleep between the close and reconnect?
@@ -149,60 +143,49 @@ Set the transport mode:
 
 -   -base_cseq       : Start value of [cseq] for each call.
 
--   -cid_str         : Call ID string (default %u-%p@%s).  %u=call_number, %s=ip_address,
-                      %p=process_number, %%=% (in any order).
+-   -cid_str         : Call ID string (default %u-%p@%s).  %u=call_number, %s=ip_address, %p=process_number, %%=% (in any order).
 
--   -d               : Controls the length of calls. More precisely, this controls the duration of
-                      'pause' instructions in the scenario, if they do not have a 'milliseconds'
-                      section. Default value is 0 and default unit is milliseconds.
+-   -d               : Controls the length of calls. More precisely, this controls the duration of 'pause' instructions in the scenario, if they do not have a 'milliseconds' section. Default value is 0 and default unit is milliseconds.
 
-- -deadcall_wait   : How long the Call-ID and final status of calls should be kept to improve
-                      message and error logs (default unit is ms).
+- -deadcall_wait   : How long the Call-ID and final status of calls should be kept to improve message and error logs (default unit is ms).
 
--   -auth_uri        : Force the value of the URI for authentication.
-                      By default, the URI is composed of remote_ip:remote_port.
+-   -auth_uri        : Force the value of the URI for authentication.  By default, the URI is composed of remote_ip:remote_port.
 
--   -au              : Set authorization username for authentication challenges. Default is taken
-                      from -s argument
+-   -au              : Set authorization username for authentication challenges. Default is taken from -s argument
 
 -   -ap              : Set the password for authentication challenges. Default is 'password'
 
 -   -s               : Set the username part of the request URI. Default is 'service'.
 
 -   -default_behaviors: Set the default behaviors that SIPp will use.  Possible values are:
-                      - all     Use all default behaviors
-                      - none    Use no default behaviors
-                      - bye     Send byes for aborted calls
-                      - abortunexp      Abort calls on unexpected messages
-                      - pingreply       Reply to ping requests
-                      If a behavior is prefaced with a -, then it is turned off.  Example:
-                      all,-bye
+    - all     Use all default behaviors
+    - none    Use no default behaviors
+    - bye     Send byes for aborted calls
+    - abortunexp      Abort calls on unexpected messages
+    - pingreply       Reply to ping requests
+If a behavior is prefaced with a -, then it is turned off.  Example: all,-bye
                       
 -   -nd              : No Default. Disable all default behavior of SIPp which are the following:
-                      - On UDP retransmission timeout, abort the call by sending a BYE or a CANCEL
-                      - On receive timeout with no ontimeout attribute, abort the call by sending
-                        a BYE or a CANCEL
-                      - On unexpected BYE send a 200 OK and close the call
-                      - On unexpected CANCEL send a 200 OK and close the call
-                      - On unexpected PING send a 200 OK and continue the call
-                      - On any other unexpected message, abort the call by sending a BYE or a
-                        CANCEL
+  - On UDP retransmission timeout, abort the call by sending a BYE or a CANCEL
+  - On receive timeout with no ontimeout attribute, abort the call by sending a BYE or a CANCEL
+  - On unexpected BYE send a 200 OK and close the call
+  - On unexpected CANCEL send a 200 OK and close the call
+  - On unexpected PING send a 200 OK and continue the call
+  - On any other unexpected message, abort the call by sending a BYE or a CANCEL
                       
 -   -pause_msg_ign   : Ignore the messages received during a pause defined in the scenario 
 -   -callid_slash_ign: Don't treat a triple-slash in Call-IDs as indicating an extra SIPp prefix.
 
 ### Injection file options:
 
--   -inf             : Inject values from an external CSV file during calls into the scenarios.
-                      First line of this file say whether the data is to be read in sequence
+-   -inf             : Inject values from an external CSV file during calls into the scenarios. First line of this file say whether the data is to be read in sequence
                       (SEQUENTIAL), random (RANDOM), or user (USER) order.
                       Each line corresponds to one call and has one or more ';' delimited data
                       fields. Those fields can be referred as [field0], [field1], ... in the xml
                       scenario file.  Several CSV files can be used simultaneously (syntax: -inf
                       f1.csv -inf f2.csv ...)
 -   -infindex        : file field
-                      Create an index of file using field.  For example -inf ../path/to/users.csv
-                      -infindex users.csv 0 creates an index on the first key.
+                      Create an index of file using field.  For example -inf ../path/to/users.csv -infindex users.csv 0 creates an index on the first key.
 -   -ip_field        : Set which field from the injection file contains the IP address from which the client will send its messages.
                       If this option is omitted and the '-t ui' option is present, then field 0 is assumed.
                       Use this option together with '-t ui'
