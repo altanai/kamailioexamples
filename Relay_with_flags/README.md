@@ -57,6 +57,7 @@ make call between 2 sip User agents.
 
 agent 1 : Bria using SIP port 5068 , auto ICE on
 username : 888 
+```
 Bria\x203 62707 altanaibisht   21u  IPv4 0x252377c03238fc13      0t0  UDP *:54599
 Bria\x203 62707 altanaibisht   23u  IPv4 0x252377c04ca04b73      0t0  UDP *:5068
 Bria\x203 62707 altanaibisht   24u  IPv4 0x252377c047070bbb      0t0  TCP *:5068 (LISTEN)
@@ -75,16 +76,17 @@ Bria\x203 62707 altanaibisht   44u  IPv4 0x252377c0323924db      0t0  UDP *:6024
 Bria\x203 62707 altanaibisht   45u  IPv4 0x252377c032392223      0t0  UDP *:62027
 Bria\x203 62707 altanaibisht   46u  IPv4 0x252377c03238ebc3      0t0  UDP *:50783
 Bria\x203 62707 altanaibisht   47u  IPv4 0x252377c04ca08f6b      0t0  UDP *:58418
-Bria\x203 62707 altanaibisht   49u  IPv4 0x252377c045591bbb      0t0  TCP 192.168.1.120:60085->ec2-x-x-x-x.compute-1.amazonaws.com:http (ESTABLISHED)
-
+Bria\x203 62707 altanaibisht   49u  IPv4 0x252377c045591bbb      0t0  TCP x.x.x.x:60085->ec2-x-x-x-x.compute-1.amazonaws.com:http (ESTABLISHED)
+````
 
 agent 2 acting as callee  : Xlite using SIP port 5067 , auto ICE on
 username : 666
+```
 X-Lite    59681 altanaibisht   35u  IPv4 0x252377c03b3ebbbb      0t0  TCP localhost:dynamid (LISTEN)
 X-Lite    59681 altanaibisht   52u  IPv4 0x252377c04ca09d03      0t0  UDP *:authentx
 X-Lite    59681 altanaibisht   55u  IPv4 0x252377c04559123b      0t0  TCP *:authentx (LISTEN)
-X-Lite    59681 altanaibisht   66u  IPv4 0x252377c044e6323b      0t0  TCP 192.168.1.120:52533->x-x-x-x:https (CLOSED)
-
+X-Lite    59681 altanaibisht   66u  IPv4 0x252377c044e6323b      0t0  TCP x.x.x.x.x->x-x-x-x:https (CLOSED)
+```
 
 
 ### Note :

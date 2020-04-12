@@ -55,7 +55,7 @@ sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls
 
 ## Available options:
 
-###Scenario file options:###
+###Scenario file options:
 
 -   -sd              : Dumps a default scenario (embedded in the SIPp executable)
 -   -sf              : Loads an alternate XML scenario file.  To learn more about XML scenario syntax, use the -sd option to dump embedded scenarios. They contain all the necessary help.
@@ -78,7 +78,7 @@ sipp -sn uas -p 5077 -t l1 -tls_key /home/ubuntu/certs/10.10.10.10/key.pem  -tls
     - '3pcc-B'   : B side.
 
 
-###IP, port and protocol options:###
+###IP, port and protocol options:
 
 -   -t               : 
 Set the transport mode:

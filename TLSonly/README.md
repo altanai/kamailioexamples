@@ -1,7 +1,9 @@
 # Secure TLS connection via port 5061 
 
-Securinng signalling using TLS certificates to provide privacy to voip calls over public internet.
-I have used self signed certificate in this exmaple which is ok for dev enviornment for staging , beta or production env use third party certificate provider ( Letsencrypt etc , I will add more on that later )
+Securing signalling using TLS certificates to provide privacy to voip calls over public internet.
+I have used self signed certificate in this example which is ok for dev environment for staging , beta or production env use third party certificate provider ( Letsencrypt etc , I will add more on that later )
+
+Read more on kamailio security :https://telecom.altanai.com/2018/02/17/kamailio-security/ 
 
 ## Steps for TLS module in kamailio
 
