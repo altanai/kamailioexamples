@@ -1,0 +1,3 @@
+id(int,auto) setid(int) url(string) weight(int) disabled(int) stamp(int)
+1:1:udp\:107.20.118.59\:2222:1:0:0
+2:2:udp\:18.213.51.150\:2222:1:0:0
