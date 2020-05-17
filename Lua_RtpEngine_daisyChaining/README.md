@@ -40,7 +40,6 @@ The outout of this should be
 ...
 # ----- ctl ------
  modparam("ctl", "binrpc", "tcp:<ip>:2046")
- 
 ```
 and use server address while using kamcmd 
 ```bash

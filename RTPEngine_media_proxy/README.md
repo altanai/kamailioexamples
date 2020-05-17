@@ -116,7 +116,7 @@ rtpengine[12058]: DEBUG: timer run time = 0.000034 sec
 ...
 ```
 
- checks threads 
+checks threads 
  ```
 >ps -ef | grep ngcp-rtpengine
  ```
@@ -339,6 +339,225 @@ based on mysql
   --mysql-user=USERNAME                                       MySQL connection credentials
   --mysql-pass=PASSWORD                                       MySQL connection credentials
   --mysql-query=STRING                                        MySQL select query
+
+## Manually Build RTPengine from Source 
+
+```bash
+with_transcoding=no with_iptables_option=no  make -C daemon
+```
+
+
+
+**Issue 1** Build fail on openssl 
+```bash
+No rule to make target `/usr/local/include/openssl/kssl.h', needed by `.depend'.  Stop.
+``` 
+\
+**soluion** if opensssl is not installed  then install 
+```bash
+brew install openssl
+```
+if already present then upgrade 
+```bash
+brew upgrade openssl@1.1
+```
+Additionally your brew shows updated dependencoes then simply update the location of ssl folder to where it is required liek 
+```bash
+cp -r /usr/local/ssl/include/openssl  /usr/local/include
+```
+
+
+**Issue 2** build fails on glib
+```bash
+make[3]: *** No rule to make target `/usr/local/Cellar/glib/2.62.0/include/glib-2.0/glib.h', needed by `.depend'.  Stop.
+```
+\
+**Solution** Install glib 
+```bash
+brew install glib
+```
+see if the version of teh glib matches with the required one 
+```bash
+brew info glib
+```
+If you have a different version install than required by this moduel then simply change the version as text replace all in .depent file in daemon folder 
+i replaced all 2.62.0 with my insatlled version of glib which was 2.64.2_1
+
+so before
+```bash
+  /usr/local/Cellar/glib/2.64.2_1/include/glib-2.0/glib/garray.h \
+  /usr/local/Cellar/glib/2.62.0/include/glib-2.0/glib/gasyncqueue.h \
+  /usr/local/Cellar/glib/2.62.0/include/glib-2.0/glib/gthread.h \
+  /usr/local/Cellar/glib/2.62.0/include/glib-2.0/glib/gatomic.h \
+  /usr/local/Cellar/glib/2.62.0/include/glib-2.0/glib/gerror.h \
+``` 
+and after replace 
+```bash
+  /usr/local/Cellar/glib/2.64.2_1/include/glib-2.0/glib/garray.h \
+  /usr/local/Cellar/glib/2.64.2_1/include/glib-2.0/glib/gasyncqueue.h \
+  /usr/local/Cellar/glib/2.64.2_1/include/glib-2.0/glib/gthread.h \
+  /usr/local/Cellar/glib/2.64.2_1/include/glib-2.0/glib/gatomic.h \
+  /usr/local/Cellar/glib/2.64.2_1/include/glib-2.0/glib/gerror.h \
+```
+
+**Issue 3** build fails at swresample
+```bash
+make[3]: *** No rule to make target `/usr/local/Cellar/ffmpeg/4.1.4_2/include/libswresample/swresample.h', needed by `.depend'.  Stop.
+```
+**Solution** again I have ffmpeg version 4.2.2_3 but the version this modules asks is 4.1.4_2 , so rpelec the .depend file 
+so before 
+```bash
+  /usr/local/Cellar/ffmpeg/4.1.4_2/include/libswresample/swresample.h \
+  /usr/local/Cellar/ffmpeg/4.1.4_2/include/libavutil/channel_layout.h \
+  /usr/local/Cellar/ffmpeg/4.1.4_2/include/libavutil/frame.h \
+  /usr/local/Cellar/ffmpeg/4.1.4_2/include/libavutil/avutil.h \
+  /usr/local/Cellar/ffmpeg/4.1.4_2/include/libavutil/common.h \
+```
+and after replacing version 
+```bash
+  /usr/local/Cellar/ffmpeg/4.2.2_3/include/libswresample/swresample.h \
+  /usr/local/Cellar/ffmpeg/4.2.2_3/include/libavutil/channel_layout.h \
+  /usr/local/Cellar/ffmpeg/4.2.2_3/include/libavutil/frame.h \
+  /usr/local/Cellar/ffmpeg/4.2.2_3/include/libavutil/avutil.h \
+  /usr/local/Cellar/ffmpeg/4.2.2_3/include/libavutil/common.h \
+```
+
+**Issue 4** Failed build at mysql server files
+```bash
+make[3]: *** No rule to make target `/usr/local/Cellar/mysql/8.0.19/include/mysql/binary_log_types.h', needed by `.depend'.  Stop.
+Failed build with ../lib/dtmf_rx_fillin-02.h
+```
+**Solution** Install mysql server 
+```bash
+brew install mysql@5.7
+```
+then copy the file to requred location 
+```bash
+cp /usr/local/Cellar/mysql@5.7/5.7.29/include/mysql/binary_log_types.h /usr/local/Cellar/mysql/8.0.19/include/mysql/
+```
+
+**Issue 5**
+```bash
+make[3]: *** No rule to make target `../include/t38.h', needed by `.depend'.  Stop.
+Failed build with ../lib/dtmf_rx_fillin-02.h
+
+```
+
+**Issue 6** Build fail 
+```bash
+poller.c:12:10: fatal error: 'sys/epoll.h' file not found
+#include <sys/epoll.h>
+         ^~~~~~~~~~~~~
+1 error generated.
+call.c:15:10: fatal error: 'xmlrpc_client.h' file not found
+#include <xmlrpc_client.h>
+         ^~~~~~~~~~~~~~~~~
+1 error generated.
+redis.c:18:10: fatal error: 'json-glib/json-glib.h' file not found
+#include <json-glib/json-glib.h>
+         ^~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+stun.c:9:10: fatal error: 'endian.h' file not found
+#include <endian.h>
+         ^~~~~~~~~~
+1 error generated.
+iptables.c:13:10: fatal error: 'libiptc/libiptc.h' file not found
+#include <libiptc/libiptc.h>
+         ^~~~~~~~~~~~~~~~~~~
+1 error generated.
+..
+Package openssl was not found in the pkg-config search path.
+Perhaps you should add the directory containing `openssl.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'openssl' found
+/bin/sh: xmlrpc-c-config: command not found
+Package libiptc was not found in the pkg-config search path.
+Perhaps you should add the directory containing `libiptc.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'libiptc' found
+Package libcrypto was not found in the pkg-config search path.
+Perhaps you should add the directory containing `libcrypto.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'libcrypto' found
+Package openssl was not found in the pkg-config search path.
+Perhaps you should add the directory containing `openssl.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'openssl' found
+/bin/sh: xmlrpc-c-config: command not found
+Package libiptc was not found in the pkg-config search path.
+Perhaps you should add the directory containing `libiptc.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'libiptc' found
+```
+**Solution** install json-glib
+```bash
+brew install json-glib
+```
+
+for sye/epoll.h
+there are no alternatievs for mac so way to forward is to comment out poller.c from makefile
+
+
+xmlrpiclient
+```bash
+call.c:15:10: fatal error: 'xmlrpc_client.h' file not found
+#include <xmlrpc_client.h>
+```
+install zmlrpc-c brew 
+````bash
+brew install xmlrpc-c 
+````
+
+endian formatting for STUN
+```bash
+stun.c:9:10: fatal error: 'endian.h' file not found
+```
+
+ ln -s /usr/include/machine/endian.h endian.h
+
+
+The pkg-config program is used to retrieve information about installed libraries in the system.  It is typically used to compile and link against one or more libraries
+
+
+
+**Issue7** lssl
+```bash
+ld: library not found for -lssl
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[3]: *** [dtmf_rx_fillin-test] Error 1
+Failed build with ../lib/dtmf_rx_fillin-01.h
+Trying build with ../lib/dtmf_rx_fillin-02.h
+/bin/sh: line 1: 27478 Abort trap: 6           which dpkg-parsechangelog 2> /de
+```
+**solutuib** tbd
+
+**Issue 8**
+```bash
+In file included from dtmf_rx_fillin-test.c:1:
+./dtmf_rx_fillin.h:11:13: error: static declaration of 'dtmf_rx_fillin' follows non-static declaration
+INLINE void dtmf_rx_fillin(dtmf_rx_state_t *dsp, int n) {
+            ^
+/usr/local/Cellar/spandsp/0.0.6_1/include/spandsp/dtmf.h:179:19: note: previous declaration is here
+SPAN_DECLARE(int) dtmf_rx_fillin(dtmf_rx_state_t *s, int samples);
+                  ^
+1 error generated.
+make[3]: *** [dtmf_rx_fillin-test] Error 1
+```
+**Solution** ensure you have the mst updated version for spandsp lib 
+spandsp is a library of Digital Signal Processing (DSP) functions for telephony
+In Asterisk, spandsp, is required for sending and receiving faxes.
+
+also ensure that if its a checkout between tags or branch its a clean checkout 
+```bash
+git clean -f -x -d
+```
+
+on debian 
+```bash
+dpkg-checkbuilddeps
+dpkg-buildpackage
+```
+
 
 ## Debugging 
 
