@@ -190,4 +190,7 @@ sipp -sn uas -p 5077 -t l1 -tls_key key.pem  -tls_cert cert.pem  -i 127.0.0.1
 Use 'sipp -h' for details, errno = 107 (Transport endpoint is not connected)
 and 
 Failed to shutdown socket 7, errno = 107 (Transport endpoint is not connected)
-**solution** 
+**solution**  tbd
+
+**ISuue7** failed to load module for tls.so
+**solution**
