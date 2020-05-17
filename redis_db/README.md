@@ -69,7 +69,7 @@ monitor realtime redis operations by
 **Issue 1**  : ERROR: db_redis [redis_table.c:685]: db_redis_parse_schema(): Failed to open schema directory '/usr/share/kamailio/db_redis/kamailio'
 **Solution** : Redis has differnt schemas for diff module. We have to create a schema defination for each . For exmaple for usrloc module, create file location in sceham_path , and add comma-separated list of column definitions in the format
 <column-name>/<type>[,<column-name>/<type> ...] 
-```
+```bash
 cd /etc/kamailio/db_redis/kamailio
 vi location
 ```
@@ -101,15 +101,16 @@ keepalive	int				11	0		no			The value to control sending keep alive requests
 partition	int				11	0		no			The value to of the partition for keep alive requests
 
 that trsalted to following redis DB schema, which needs to be inserted seprately in scehma file. Redis will use this to HMSET
-```
+```bash
 username/string,domain/string,contact/string,received/string,path/string,expires/timestamp,q/double,callid/string,cseq/int,last_modified/timestamp,flags/int,cflags/int,user_agent/string,socket/string,methods/int,ruid/string,reg_id/int,instance/string,server_id/int,connection_id/int,keepalive/int,partition/int
 ```
 save and give path 
-```
+```bash
 modparam("db_redis", "schema_path", "/etc/kamailio/db_redis/kamailio")
 ```			
 
 **Issue 2** :  db_redis_parse_keys(): No table schema found for table 'version', fix config by adding one to the 'schema' mod-param!
+
 **Solution** : The above schema defination table is followd by a line holding the table version.
 semi-colon separated list of definitions in the format <table-name>=<entry>:<column-name>[&<map-name>:<column-name>,<column-name>...]
 Each table must at least have an "entry" key for db_redis to be able to store data.
@@ -122,6 +123,8 @@ Each table must at least have an "entry" key for db_redis to be able to store da
  0(21179) ERROR: <core> [core/rvalue.c:3859]: fix_rval_expr(): failure in cfg at line: 613 col: 22
  0(21179) ERROR: <core> [core/rvalue.c:3859]: fix_rval_expr(): failure in cfg at line: 613 col: 22
  0(21179) ERROR: <core> [core/route.c:1153]: fix_actions(): fixing failed (code=-1) at cfg:/etc/kamailio/kamailio_redis.cfg:616
+```
+
 **Solution**  For every kind of module there will be speific version , which needs to be included after schema defination , such as doe dialog module it is 7 so schema file will be 
 ```
 id/int,hash_entry/int,hash_id/int,callid/string,from_uri/string,from_tag/string,to_uri/string,to_tag/string,caller_cseq/string,callee_cseq/string,caller_route_set/string,callee_route_set/string,caller_contact/string,callee_contact/string,caller_sock/string,callee_sock/string,state/int,start_time/int,timeout/int,sflags/int,iflags/int,toroute_name/string,req_uri/string,xdata/string,
@@ -205,6 +208,7 @@ xcap:4
  1(3205) ERROR: db_redis [redis_dbase.c:1892]: db_redis_insert(): failed to build entry keys
  1(3205) ERROR: db_redis [redis_dbase.c:1976]: db_redis_insert(): failed to do the insert
  1(3205) ERROR: dialog [dlg_db_handler.c:905]: update_dialog_dbinfo_unsafe(): could not add another dialog to db
+
 **Solution** : if it complains on the structure of keys , check the keys defination in kamailio.cfg where dilaog module's params are defined .
 Some common keys definations are :
 userloc keys 
@@ -223,6 +227,24 @@ dialog keys
 ```
 modparam("db_redis", "keys", "dialog=entry:hash_entry,hash_id,callid")
 modparam("db_redis", "keys", "dialog_vars=entry:hash_entry,hash_id,dialog_key,dialog_value")
+```
+
+**Issue 5** hiredis.h: No such file or directory
+```bash
+CC (gcc) [M topos_redis.so]		topos_redis_mod.o
+In file included from ../ndb_redis/api.h:25:0,
+                 from topos_redis_mod.c:32:
+../ndb_redis/redis_client.h:34:10: fatal error: hiredis.h: No such file or directory
+ #include <hiredis.h>
+          ^~~~~~~~~~~
+compilation terminated.
+../../Makefile.rules:100: recipe for target 'topos_redis_mod.o' failed
+make[2]: *** [topos_redis_mod.o] Error 1
+```
+
+**Solution** Install redis libs
+```bash
+
 ```
 
 
