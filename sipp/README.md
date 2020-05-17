@@ -59,7 +59,7 @@ sipp 10.10.10.10:5077 -s 1234567890 -sn uac -t l1  -tls_key /home/ubuntu/certs/1
 
 ## Available options:
 
-###Scenario file options:###
+###Scenario file options:
 
 -   -sd              : Dumps a default scenario (embedded in the SIPp executable)
 -   -sf              : Loads an alternate XML scenario file.  To learn more about XML scenario syntax, use the -sd option to dump embedded scenarios. They contain all the necessary help.
@@ -82,7 +82,7 @@ sipp 10.10.10.10:5077 -s 1234567890 -sn uac -t l1  -tls_key /home/ubuntu/certs/1
     - '3pcc-B'   : B side.
 
 
-###IP, port and protocol options:###
+###IP, port and protocol options:
 
 -   -t               : 
 Set the transport mode:
@@ -169,7 +169,8 @@ Set the transport mode:
     - pingreply       Reply to ping requests
 If a behavior is prefaced with a -, then it is turned off.  Example: all,-bye
                       
--   -nd              : No Default. Disable all default behavior of SIPp which are the following:
+-   -nd              : 
+No Default. Disable all default behavior of SIPp which are the following:
   - On UDP retransmission timeout, abort the call by sending a BYE or a CANCEL
   - On receive timeout with no ontimeout attribute, abort the call by sending a BYE or a CANCEL
   - On unexpected BYE send a 200 OK and close the call
@@ -347,7 +348,7 @@ Reset response time partition counters each logging interval.
 -   -trace_msg       : 
 Displays sent and received SIP messages in <scenario file name>_<pid>_messages.log
 
--  -message_file    : Set the name of the message log file.
+-   -message_file    : Set the name of the message log file.
 -   -message_overwrite: Overwrite the message log file (default true).
 -   -trace_shortmsg  : Displays sent and received SIP messages as CSV in <scenario file
                       name>_<pid>_shortmessages.log
