@@ -1,4 +1,4 @@
-# Link Two RTP Engines by Daisyy 
+# Link Two RTP Engines by Daisy Chain Linking 
 
 Ensure you have added two RTP engines in rtpengine list file 
 
@@ -31,7 +31,25 @@ The outout of this should be
 	recheck_ticks: 0
 }
 ```
-### debugging 
+
+Test the system 
+```bash
+ sipp -sf sipp_uac_rtpecho.xml  -s 300 <app_Server_ip>:5066  -i <sipclient_ip> -trace_err -m 1
+```
+
+## Run
+
+Kamailio 
+```bash
+ kamailio -f kamailio_lua.cfg -Ee
+```
+
+RTPengine via config
+```bash
+
+```
+
+### Debugging 
 
 **Issue1** ERROR: connect_unix_sock: connect(/var/run/kamailio//kamailio_ctl): No such file or directory [2]
 **Solution** ensure the ctl modules is used and connectred to correct ip of app server 
@@ -122,17 +140,11 @@ module 'cjson' not found:
 	no file '/usr/local/lib/lua/5.1/cjson/init.lua'
 	no file '/usr/share/lua/5.1/cjson.lua'
 	no file '/usr/share/lua/5.1/cjson/init.lua'
-	no file '/home/ubuntu/zentrunk-app-server/zen-trunk/src/cjson.lua'
-	no file '/home/ubuntu/zentrunk-app-server/zen-trunk/src/utils/cjson.lua'
-	no file '/home/ubuntu/zentrunk-app-server/zen-trunk/src/core/cjson.lua'
 	no file '/etc/kamailio/cjson.lua'
 	no file '/etc/kamailio/utils/cjson.lua'
 	no file '/etc/kamailio/cjson.lua'
 	no file '/etc/kamailio/utils/cjson.lua'
 	no file '/etc/kamailio/core/cjson.lua'
-	no file '../../zen-trunk/src/cjson.lua'
-	no file '../../zen-trunk/src/utils/cjson.lua'
-	no file '../../zen-trunk/src/core/cjson.lua'
 	no file './cjson.so'
 	no file '/usr/local/lib/lua/5.1/cjson.so'
 	no file '/usr/lib/x86_64-linux-gnu/lua/5.1/cjson.so'
@@ -155,3 +167,23 @@ Also you can use the modules directly instead of installing via luarocks
 ```bash
 sudo apt get install lua-cjson
 ``` 
+
+**Issue 5** base58.lua lua module
+```bash
+ 4(5541) ERROR: app_lua [app_lua_api.c:326]: lua_sr_init_child(): error from Lua: ...main.lua module 'base58' not found:
+	no field package.preload['base58']
+	no file './base58.lua'
+	no file '/usr/local/share/lua/5.1/base58.lua'
+	no file '/usr/local/share/lua/5.1/base58/init.lua'
+	no file '/usr/local/lib/lua/5.1/base58.lua'
+	no file '/usr/local/lib/lua/5.1/base58/init.lua'
+	no file '/usr/share/lua/5.1/base58.lua'
+	no file '/usr/share/lua/5.1/base58/init.lua'
+```
+\
+**solution** base58 is decoder and encoder for strings. 
+Just as explained in issue no 4 some dependencies are lua version specific such as this one 
+```bash
+> luarocks install base58
+Error: base58 supports only Lua 5.1 but not Lua 5.2.
+```
