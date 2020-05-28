@@ -5,14 +5,14 @@ Ensure you have added two RTP engines in rtpengine list file
 ```bash
 id(int,auto) setid(int) url(string) weight(int) disabled(int) stamp(int)
 1:1:udp\:<rtpengine_ip1>\:2222:1:0:0
-2:2:udp\:1<rtpengine_ip2>\:2222:1:0:0
+2:2:udp\:<rtpengine_ip2>\:2222:1:0:0
 ```
 
 Ensure you have both the RTP engines loaded 
 ```bash
 kamcmd -s tcp:<appserver_ip>:2046 rtpengine.show all
 ```
-The outout of this should be 
+The output of this should be 
 ```bash
 {
 	url: udp:<rtpengine_ip1>:2222
@@ -186,4 +186,34 @@ Just as explained in issue no 4 some dependencies are lua version specific such 
 ```bash
 > luarocks install base58
 Error: base58 supports only Lua 5.1 but not Lua 5.2.
+```
+
+**Issue 6** proxy replied with error: Ran out of ports
+```bash
+ 1(19894) ERROR: rtpengine [rtpengine.c:2588]: rtpp_function_call(): proxy replied with error: Ran out of ports
+```
+**Solution** check port permission. In my case restrating rtpenine and runinig kacmd rtpengine.eload solved the issues 
+
+**Issue 7** Failed to extract streams from SDP: Invalid RTP payload types
+```bash
+Failed to extract streams from SDP: Invalid RTP payload types
+Protocol error in packet from 106.215.152.21:7165: Incomplete SDP specification [d8:supportsl10:load limite3:sdp774:
+v=0#015#012o=FreeSWITCH 1590090363 1590090364 IN IP4 172.20.10.2#015#012
+s=FreeSWITCH#015#012
+c=IN IP4 172.20.10.2#015#012
+t=0 0#015#012
+a=msid-semantic: WMS Zmjg65pfviISGEmPFeOwUXi8jk0cvpOk#015#012
+m=audio 30676 RTP/AVPF 8 101#015#012
+a=rtpmap:8 PCMA/8000#015#012
+a=rtpmap:101 telephone-event/8000#015#012
+a=ptime:20#015#012
+a=rtcp:30677 IN IP4 172.20.10.2#015#012
+a=ice-ufrag:fFz0sHYBSPDe4iow#015#012
+a=ice-pwd:6FUQbpWQrL2ZMS2RorIGZx8H#015#012a=candidate:2330066942 1 udp ...
+659136 172.20.10.2 30676 typ host generation 0#015#012
+a=candidate:2330066942 2 udp 659135 172.20.10.2 30677 typ host generation 0#015#012
+a=end-of-candidates#015#012
+a=ssrc:1122649911 cname:BYryTGEfOcYlHb0c#015#012a=ssrc:1122649911 msid:Zmjg65pfviISGEmPFeOwUXi8jk0cvpOk a0#015#012
+a=ssrc:1122649911 mslabel:Zmjg65pfviISGEmPFeOwUXi8jk0cvpOk#015#012a=ssrc:1122649911 label:Zmjg65pfviISGEmPFeOwUXi8jk0cvpOka0#015#012
+m=audio 0 RTP/AVPF 193:ICE6:remove5:label10:Cleg_label5:flagsl19:full-rtcp-attributee7:replacel6:origin18:session-connectione18:transport-protocol8:RTP/AVPF7:call-id49:103103N2JhNjlhZTk3YjkxM2Y3ZWY0NzFhMzU3Y2ZmN2NlNWY13:received-froml3:IP411:172.20.10.2e8:from-tag8:45e1e95f6:to-tag13:Ht9rSU4mBFN5H7:command6:answere]
 ```
