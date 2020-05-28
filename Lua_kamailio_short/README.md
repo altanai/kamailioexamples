@@ -77,7 +77,7 @@ end
 
 ## Debugging 
 
-**Issue1** lua.h: No such file or directory 
+**Issue1** Failing to build module app_lua with lua.h: No such file or directory 
 ```bash
 CC (gcc) [M app_lua.so]		app_lua_mod.o
 In file included from app_lua_mod.c:32:0:
@@ -95,6 +95,12 @@ sudo apt-get install lua5.2
 sudo apt-get install libprotobuf-dev protobuf-compiler
 luarocks install loadcaffe
 ```
+Then to build the lua module goto /kamailio_sourcecodefolder/src/modules/app_lua
+and run
+```bash
+ sudo make && make install 
+```
+
 
 **Issue2** Event.h not found 
 ```bash
@@ -157,7 +163,7 @@ make[2]: *** [uuid_mod.o] Error 1
 apt-get install uuid-dev
 ```
 
-**Issue 6** 
+**Issue 6** Failing to build module json
 ```bash
 CC (gcc) [M jsonrpcc.so]		jsonrpc_io.o
 In file included from jsonrpc_io.c:41:0:
@@ -171,7 +177,6 @@ make[2]: *** [jsonrpc_io.o] Error 1
 **Solution** json RPC install
 ```bash
 sudo apt install libjsoncpp-dev libjson-c-dev
-
 ```
 
 **Issue 7** jansson.h: No such file or directory

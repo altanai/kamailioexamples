@@ -12,7 +12,7 @@ Ensure you have bothe the RTP engines loaded
 ```bash
 kamcmd -s tcp:<appserver_ip>:2046 rtpengine.show all
 ```
-The outout of this should be 
+The output of this should be 
 ```bash
 {
 	url: udp:<rtpengine_ip1>:2222
@@ -85,4 +85,23 @@ kamcmd -s tcp:<appserver_ip>:2046 dispatcher.list
 You cna also reload the dispatcher 
 ```bash
 kamcmd -s tcp:<appserver_ip>:2046 dispatcher.reload
+```
+
+**Issue 3** CTL module not connecting  
+```bash
+ 0(23404) ERROR: ctl [init_socks.c:210]: init_tcpudp_sock(): ERROR: init_tcpudp_sock: bind: Cannot assign requested address [99]
+ 0(23404) ERROR: ctl [ctl.c:291]: mod_init(): ERROR: ctl: mod_init: init ctrl. sockets failed
+ 0(23404) ERROR: <core> [core/sr_module.c:911]: init_mod(): Error while initializing module ctl (/usr/local/lib64/kamailio/modules/ctl.so)
+```
+\
+**solution** check whether the IP address is  prohibited with correct IP and port 
+```bash
+ modparam("ctl", "binrpc", "tcp:192.168.1.111:2046")
+```
+or define using substitute string like 
+```bash
+#!substdef "!MY_IP_ADDR!192.168.1.111!g"
+#!substdef "!MY_CTL_ADDR!tcp:MY_IP_ADDR:2046!g"
+...
+modparam("ctl", "binrpc", MY_CTL_ADDR)
 ```

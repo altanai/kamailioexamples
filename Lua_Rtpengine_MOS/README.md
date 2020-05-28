@@ -16,9 +16,21 @@ samples -  number of samples used to determine the other MOS data points.
 
 UAC -> Kamailio SIP server -> UAS 
 
-## Run
+## Run 
+
+Kamailio
 ```
 kamailio -f kamailio_lua.cfg -Ee
+```
+
+RTPengine form config file 
+```bash
+
+```
+or 
+RTPengine form command line  
+```baah
+/home/altanai/rtpengine/daemon/rtpengine  --interface=192.168.1.111 --listen-ng=127.0.0.1:2222 -E
 ```
 
 ### RTPengine from dbtext
@@ -102,9 +114,15 @@ modparam("rtpengine", "mos_average_B_pv", "$avp(mos_average_B)")
 -- sr - the old static object exporting Kamailio functions
 
 
-
 ## Debugging 
 
+**isuee** ERROR: rtpengine [rtpengine.c:1766]: build_rtpp_socks(): Name or service not known
+
+**solution**
+```bash
+id(int,auto) setid(int) url(string) weight(int) disabled(int) stamp(int)
+1:1:udp\:192.168.1.109\:2222:1:0:0
+```
 
 **Ref** :
 
