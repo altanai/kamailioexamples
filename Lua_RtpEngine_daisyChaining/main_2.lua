@@ -9,6 +9,9 @@ FLT_NATS = 1 -- the UAC is behind a NAT , transaction flag
 FLB_NATB = 2 -- the UAS is behind a NAT , branch flag
 FLT_DIALOG = 4
 
+local rtpengine_offer_flag = "ICE=remove RTP/AVPF full-rtcp-attribute direction=internal direction=internal replace-origin replace-session-connection record-call=no"
+local rtpengine_answer_flag = "ICE=remove RTP/AVPF full-rtcp-attribute direction=internal direction=internal replace-origin replace-session-connection record-call=no"
+
 --[[--------------------------------------------------------------------------
 ------------------------- Request Routing Logic --------------------------]]
 function ksr_request_route()
@@ -280,7 +283,6 @@ function ksr_route_relay(req_method)
 
         if bye_rcvd ~= "true" and KSR.textops.has_body_type("application/sdp") > 0 then
             KSR.log("info", "method contains sdp, creating offer to rtpengine \n")
-            local rtpengine_offer_flag = "ICE=remove RTP/AVPF full-rtcp-attribute direction=internal direction=internal replace-origin replace-session-connection record-call=no"
 
             KSR.rtpengine.set_rtpengine_set2("1","2")
 
@@ -398,7 +400,6 @@ function ksr_onreply_manage_answer()
     local bye_rcvd = KSR.pv.get("$dlg_var(bye_rcvd)") or "false";
     if bye_rcvd ~= "true" and KSR.textops.has_body_type("application/sdp") > 0 then
         KSR.log("info", "response contains sdp, answer to rtpengine \n")
-        local rtpengine_answer_flag = "ICE=remove RTP/AVPF full-rtcp-attribute direction=internal direction=internal replace-origin replace-session-connection record-call=no"
         if KSR.rtpengine.rtpengine_answer(rtpengine_answer_flag) > 0 then
             KSR.log("info", "received success reply for rtpengine answer from instance \n")
         else

@@ -41,6 +41,12 @@ ERROR: database engine not specified, please setup one in the config script
 ```
 
 Update kamctlrc withe engine such as BENGINE=SQLITE
+
+find kamctlrc
+```bash
+sudo find / -name kamctlrc
+```
+
 My kamctlrc is at location /usr/local/etc/kamailio/kamctlrc
 ```bash
 ## the SIP domain
@@ -99,6 +105,7 @@ Then give the location of create DB to kamailio config such as
 /usr/local/sbin/kamailio.db
 ```
 
+## Debugging 
 
 **Issue1** db not opened 
 ```bash
@@ -107,4 +114,10 @@ Then give the location of create DB to kamailio config such as
 **Solution** ensure that sqlite is installed 
 ```bash
 apt install sqlite3
+```
+
+**Issue 2** could not load the script kamdbctl.sqlite
+```bash
+-e \E[37;31mERROR: could not load the script in /usr/local/lib64/kamailio//kamctl/kamdbctl.sqlite for database engine SQLITE
+-e \E[37;31mERROR: database engine not loaded - tried 'SQLITE'
 ```

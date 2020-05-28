@@ -13,12 +13,12 @@ FLT_DIALOG = 4
 local rtpengine_codecs_flag = " codec-strip-all codec-offer-PCMA codec-offer-pcma codec-offer-PCMU codec-offer-pcmu codec-offer-telephone-event codec-offer-TELEPHONE-EVENT"
 
 -- offer/answer for RTPengine1
-local rtpengine_offer_flag1 = "ICE=remove RTP/AVPF full-rtcp-attribute direction=external direction=external replace-origin replace-session-connection record-call=yes " .. rtpengine_codecs_flag
-local rtpengine_answer_flag1 = "ICE=remove RTP/AVPF full-rtcp-attribute replace-origin replace-session-connection record-call=yes"
+local rtpengine_offer_flag1 = "ICE=remove RTP/AVP full-rtcp-attribute direction=internal direction=internal replace-origin replace-session-connection record-call=yes " .. rtpengine_codecs_flag
+local rtpengine_answer_flag1 = "ICE=remove RTP/AVP full-rtcp-attribute replace-origin replace-session-connection record-call=yes"
 
 -- offer/answer for RTPengine2
-local rtpengine_offer_flag2 = "ICE=remove RTP/AVPF full-rtcp-attribute  direction=external direction=external replace-origin replace-session-connection" .. rtpengine_codecs_flag
-local rtpengine_answer_flag2 = "ICE=remove RTP/AVPF full-rtcp-attribute replace-origin replace-session-connection"
+local rtpengine_offer_flag2 = "ICE=remove RTP/AVP full-rtcp-attribute  direction=inetrnal direction=external replace-origin replace-session-connection"
+local rtpengine_answer_flag2 = "ICE=remove RTP/AVP full-rtcp-attribute replace-origin replace-session-connection"
 
 --[[--------------------------------------------------------------------------
 ----------------------- Request Routing Logic --------------------------]
@@ -76,11 +76,11 @@ function ksr_route_reqinit(user_agent)
     end
 
     -- sanity Check
-    local sanity_check = KSR.sanity.sanity_check(1511, 7)
-    if sanity_check < 0 then
-        KSR.log("err", "received invalid sip packet \n")
-        KSR.x.exit()
-    end
+--    local sanity_check = KSR.sanity.sanity_check(1511, 7)
+--    if sanity_check < 0 then
+--        KSR.log("err", "received invalid sip packet \n")
+--        KSR.x.exit()
+--    end
 
     KSR.log("info", "initial request check is passed \n")
     return 1
@@ -144,7 +144,7 @@ function ksr_route_request_process(request_method)
 
             KSR.log("info", " --------------- going to call set_rtpengine_set on RTPnegine 1 \n");
             KSR.rtpengine.set_rtpengine_set("1")
-            KSR.log("info", " rtpengine_offer_flag1 " .. rtpengine_offer_flag1);
+            KSR.log("info", " rtpengine_offer_flag1 " .. rtpengine_offer_flag1 .. "\n");
             if KSR.rtpengine.rtpengine_offer(rtpengine_offer_flag1) > 0 then
                 KSR.log("info", "received success reply for rtpengine offer 1 \n")
             else
@@ -165,7 +165,7 @@ function ksr_route_request_process(request_method)
 
             KSR.log("info", " --------------- going to call set_rtpengine_set on RTPnegine 2 \n");
             KSR.rtpengine.set_rtpengine_set("2")
-            KSR.log("info", " rtpengine_offer_flag2 " .. rtpengine_offer_flag2);
+            KSR.log("info", " rtpengine_offer_flag2 " .. rtpengine_offer_flag2 .. "\n");
             if KSR.rtpengine.rtpengine_offer(rtpengine_offer_flag2) > 0 then
                 KSR.log("info", "received success reply for rtpengine offer 2 \n")
             else
@@ -295,13 +295,13 @@ function ksr_route_withindlg(request_method)
     -- Relay ACK if it matches with a transaction. Else ignore and discard
     KSR.log("info", "in-dialog request,not loose_route \n")
     if request_method == "ACK" then
-        if KSR.tm.t_check_trans() > 0 then
-            -- no loose-route, but stateful ACK; must be an ACK after a 487 or e.g. 404 from upstream server
-            KSR.log("info", "in-dialog request,not loose_route with transaction - relaying \n")
-            ksr_route_relay(request_method);
-        end
-        KSR.log("err", "in-dialog request,not loose_route without transaction, exit \n")
-        KSR.x.exit()
+        --        if KSR.tm.t_check_trans() > 0 then
+        -- no loose-route, but stateful ACK; must be an ACK after a 487 or e.g. 404 from upstream server
+        KSR.log("info", "in-dialog request,not loose_route with transaction - relaying \n")
+        ksr_route_relay(request_method);
+        --        end
+        --        KSR.log("err", "in-dialog request,not loose_route without transaction, exit \n")
+        --        KSR.x.exit()
     end
 
     KSR.log("err", "received invalid sip packet,sending 404 \n");
@@ -338,8 +338,46 @@ function ksr_route_relay(req_method)
         if KSR.tm.t_is_set("branch_route") < 0 then
             KSR.tm.t_on_branch("ksr_branch_manage");
         end
+
         KSR.log("info", "sending delete command to rtpengine \n")
+
+        -- send delet command to rtpengine based on callid
+        KSR.log("info", "ksr_dialog_event end of failed : sending delete command to rtpengine \n")
+        KSR.rtpengine.set_rtpengine_set("2")
         KSR.rtpengine.rtpengine_delete0()
+
+        KSR.rtpengine.set_rtpengine_set("1")
+        KSR.rtpengine.rtpengine_delete0()
+
+        --        call querry in attenmpt to populate mos scores
+        KSR.rtpengine.rtpengine_query0()
+
+        KSR.log("info", " mos avg " .. KSR.pv.get("$avp(mos_average)") or 0)
+        KSR.log("info", " mos max " .. KSR.pv.get("$avp(mos_max)") or 0)
+        KSR.log("info", " mos min " .. KSR.pv.get("$avp(mos_min)") or 0)
+
+        KSR.log("info", "mos_average_packetloss_pv" .. KSR.pv.get("$avp(mos_average_packetloss)") or 0)
+        KSR.log("info", "mos_average_jitter_pv" .. KSR.pv.get("$avp(mos_average_jitter)") or 0)
+        KSR.log("info", "mos_average_roundtrip_pv" .. KSR.pv.get("$avp(mos_average_roundtrip)") or 0)
+        KSR.log("info", "mos_average_samples_pv" .. KSR.pv.get("$avp(mos_average_samples)") or 0)
+
+        KSR.log("info", "mos_min_pv" .. KSR.pv.get("$avp(mos_min)") or 0)
+        KSR.log("info", "mos_min_at_pv" .. KSR.pv.get("$avp(mos_min_at)"))
+        KSR.log("info", "mos_min_packetloss_pv" .. KSR.pv.get("$avp(mos_min_packetloss)") or 0)
+        KSR.log("info", "mos_min_jitter_pv" .. KSR.pv.get("$avp(mos_min_jitter)") or 0)
+        KSR.log("info", "mos_min_roundtrip_pv" .. KSR.pv.get("$avp(mos_min_roundtrip)") or 0)
+
+        --        --        KSR.log("info", "mos_A_label_pv" .. KSR.pv.get("$avp(mos_A_label)")
+        --        KSR.log("info", "mos_average_packetloss_A_pv" .. KSR.pv.get("$avp(mos_average_packetloss_A)"))
+        --        KSR.log("info", "mos_average_jitter_A_pv" .. KSR.pv.get("$avp(mos_average_jitter_A)"))
+        --        KSR.log("info", "mos_average_roundtrip_A_pv" .. KSR.pv.get("$avp(mos_average_roundtrip_A)"))
+        --        KSR.log("info", "mos_average_A_pv" .. KSR.pv.get("$avp(mos_average_A)"))
+        --
+        --        --        KSR.log("info", "mos_B_label_pv" .. KSR.pv.get("$avp(mos_B_label)"))
+        --        KSR.log("info", "mos_average_packetloss_B_pv" .. KSR.pv.get("$avp(mos_average_packetloss_B)"))
+        --        KSR.log("info", "mos_average_jitter_B_pv" .. KSR.pv.get("$avp(mos_average_jitter_B)"))
+        --        KSR.log("info", "mos_average_roundtrip_B_pv" .. KSR.pv.get("$avp(mos_average_roundtrip_B)"))
+        --        KSR.log("info", "mos_average_B_pv" .. KSR.pv.get("$avp(mos_average_B)"))
 
     elseif req_method == "INVITE" or req_method == "UPDATE" then
         if KSR.tm.t_is_set("branch_route") < 0 then
@@ -358,16 +396,17 @@ function ksr_route_relay(req_method)
             -- since rtp engine offer is set alreday just set the anser path
             KSR.tm.t_on_reply("ksr_onreply_manage_answer");
         end
-
-    elseif req_method == "ACK" then
-        if bye_rcvd ~= "true" and KSR.textops.has_body_type("application/sdp") > 0 then
-            KSR.log("info", "request contains sdp, sending answer command to rtpengine \n")
-            KSR.rtpengine.rtpengine_answer()
-        end
     end
 
-    KSR.log("info", " Relay to destination ");
+    KSR.log("info", " Relay to destination \n");
+
+    -- append any outgoung headers
+    local header = "X-PlivoGateways"
+    local carrierstr = "sip:34.237.124.37:5080;timeout=120;carrierid=1^"
+    KSR.hdr.append(header .. ": " .. carrierstr .. "\r\n")
+
     KSR.tm.t_relay()
+    --    KSR.tm.t_relay("udp","13.126.163.153","5060")
     KSR.x.exit()
 end
 
@@ -467,7 +506,7 @@ function ksr_onreply_manage_answer()
     local bye_rcvd = KSR.pv.get("$dlg_var(bye_rcvd)") or "false";
 
     if bye_rcvd ~= "true" and KSR.textops.has_body_type("application/sdp") > 0 then
-         KSR.log("info", "-------------200 OK with SDP received --------------- do RTP engine SDP manipulation and then  \n ")
+        KSR.log("info", "------------- 200 OK with SDP received --------------- do RTP engine SDP manipulation and then  \n ")
 
         KSR.log("info", "response contains sdp, answer to rtpengine \n")
         --        local rtpengine_answer_flag = "ICE=remove RTP/AVPF full-rtcp-attribute direction=internal direction=internal replace-origin replace-session-connection record-call=no"
@@ -485,7 +524,7 @@ function ksr_onreply_manage_answer()
 
         KSR.log("info", " Answer : --------------- going to call set_rtpengine_set on RTPnegine 2 \n");
         KSR.rtpengine.set_rtpengine_set("2")
-        KSR.log("info", " rtpengine_answer_flag2 " .. rtpengine_answer_flag2);
+        KSR.log("info", " rtpengine_answer_flag2 " .. rtpengine_answer_flag2 .. "\n");
         if KSR.rtpengine.rtpengine_answer(rtpengine_answer_flag2) > 0 then
             KSR.log("info", "Answer : received success reply for rtpengine answer 2 \n")
         else
@@ -506,7 +545,7 @@ function ksr_onreply_manage_answer()
 
         KSR.log("info", " Answer : --------------- going to call set_rtpengine_set on RTPnegine 1 \n");
         KSR.rtpengine.set_rtpengine_set("1")
-        KSR.log("info", " Answer : rtpengine_answer_flag1 " .. rtpengine_answer_flag1);
+        KSR.log("info", " Answer : rtpengine_answer_flag1 " .. rtpengine_answer_flag1 .. "\n");
         if KSR.rtpengine.rtpengine_answer(rtpengine_answer_flag1) > 0 then
             KSR.log("info", "Answer : received success reply for rtpengine answer 1 \n")
         else
@@ -559,6 +598,10 @@ function ksr_failure_manage()
 
     -- send delet command to rtpengine based on callid
     KSR.log("info", "failure route: sending delete command to rtpengine \n")
+    KSR.rtpengine.set_rtpengine_set("2")
+    KSR.rtpengine.rtpengine_delete0()
+
+    KSR.rtpengine.set_rtpengine_set("1")
     KSR.rtpengine.rtpengine_delete0()
 
     -- check trsansaction state and drop if cancelled
@@ -575,7 +618,6 @@ end
    Name: ksr_htable_event(evname)
    Desc: callback for the given htable event-name
 ------------------------------------------------------------------------------]]
-
 function ksr_htable_event(evname)
     KSR.log("info", "htable module triggered event - " .. evname .. "\n");
     return 1;
@@ -594,36 +636,6 @@ function ksr_dialog_event(evname)
         if not call_id then
             KSR.log("info", "no callid for this call")
         end
-
-        KSR.log("info", " delete RTPengine")
-        KSR.rtpengine.rtpengine_delete0()
-
-        KSR.log("info", " mos avg " .. KSR.pv.get("$avp(mos_average)"))
-        KSR.log("info", " mos max " .. KSR.pv.get("$avp(mos_max)"))
-        KSR.log("info", " mos min " .. KSR.pv.get("$avp(mos_min)"))
-
-        KSR.log("info", "mos_average_packetloss_pv" .. KSR.pv.get("$avp(mos_average_packetloss)"))
-        KSR.log("info", "mos_average_jitter_pv" .. KSR.pv.get("$avp(mos_average_jitter)"))
-        KSR.log("info", "mos_average_roundtrip_pv" .. KSR.pv.get("$avp(mos_average_roundtrip)"))
-        KSR.log("info", "mos_average_samples_pv" .. KSR.pv.get("$avp(mos_average_samples)"))
-
-        KSR.log("info", "mos_min_pv" .. KSR.pv.get("$avp(mos_min)"))
-        KSR.log("info", "mos_min_at_pv" .. KSR.pv.get("$avp(mos_min_at)"))
-        KSR.log("info", "mos_min_packetloss_pv" .. KSR.pv.get("$avp(mos_min_packetloss)"))
-        KSR.log("info", "mos_min_jitter_pv" .. KSR.pv.get("$avp(mos_min_jitter)"))
-        KSR.log("info", "mos_min_roundtrip_pv" .. KSR.pv.get("$avp(mos_min_roundtrip)"))
-
-        --        KSR.log("info", "mos_A_label_pv" .. KSR.pv.get("$avp(mos_A_label)")
-        KSR.log("info", "mos_average_packetloss_A_pv" .. KSR.pv.get("$avp(mos_average_packetloss_A)"))
-        KSR.log("info", "mos_average_jitter_A_pv" .. KSR.pv.get("$avp(mos_average_jitter_A)"))
-        KSR.log("info", "mos_average_roundtrip_A_pv" .. KSR.pv.get("$avp(mos_average_roundtrip_A)"))
-        KSR.log("info", "mos_average_A_pv" .. KSR.pv.get("$avp(mos_average_A)"))
-
-        --        KSR.log("info", "mos_B_label_pv" .. KSR.pv.get("$avp(mos_B_label)"))
-        KSR.log("info", "mos_average_packetloss_B_pv" .. KSR.pv.get("$avp(mos_average_packetloss_B)"))
-        KSR.log("info", "mos_average_jitter_B_pv" .. KSR.pv.get("$avp(mos_average_jitter_B)"))
-        KSR.log("info", "mos_average_roundtrip_B_pv" .. KSR.pv.get("$avp(mos_average_roundtrip_B)"))
-        KSR.log("info", "mos_average_B_pv" .. KSR.pv.get("$avp(mos_average_B)"))
     end
 end
 
@@ -644,6 +656,9 @@ function ksr_xhttp_event(evname)
 end
 
 function service_callback()
+    --    KSR.log("info", "request-uri - " .. tostring(KSR.pv.get("$ru")) .. "\n")
+    --    local request_method = KSR.pv.get("$rm") or "";
+    --    ksr_route_relay(request_method);
     local dispatch_set = 1
     local routing_policy = "8"
 

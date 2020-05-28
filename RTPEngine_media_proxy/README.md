@@ -151,7 +151,7 @@ INFO - *** supported codecs ***
 INFO - *****************************
 ```
 
-## Integartion with kamailio 
+## Integrition with kamailio 
 
 ```
 loadmodule "rtpengine.so"
@@ -239,6 +239,34 @@ a=candidate:b2yZ1hLMPAbVI08J 2 UDP 2130706430 rtp_engine_pub_ip 10053 typ host
 ", "result": "ok" }
 [1563192872.000170] DEBUG:
 ```
+
+Notice the RTPengine changng the oline in SDP with its own address to successfully relay the media 
+before o line has clients address 192.168.1.109
+```bash
+v=0
+o=- 1590109986345922 1 IN IP4 192.168.1.109
+s=Bria release 6.1.0 stamp 103103
+c=IN IP4 192.168.1.109
+t=0 0
+m=audio 63606 RTP/AVP 0 8 101
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-15
+a=sendrecv
+```
+
+after SDP manipulation o line gets rtp engine address 192.168.1.111
+```bash
+v=0
+o=- 1590109986345922 1 IN IP4 192.168.1.111
+s=Bria release 6.1.0 stamp 103103
+c=IN IP4 192.168.1.111
+t=0 0
+m=audio 30036 RTP/AVPF 8
+a=rtpmap:8 PCMA/8000
+a=sendrecv
+```
+
+Simillarly for answer 
 
 ## RTP engine options 
 
