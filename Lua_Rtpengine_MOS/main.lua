@@ -12,8 +12,8 @@ FLT_DIALOG = 4
 -- codecs
 local rtpengine_codecs_flag = " codec-strip-all codec-offer-PCMA codec-offer-pcma "
 
-local rtpengine_offer_flag = "ICE=remove RTP/AVPF full-rtcp-attribute direction=external direction=external replace-origin replace-session-connection record-call=yes " .. rtpengine_codecs_flag .. " label=Aleg_label "
-local rtpengine_answer_flag = "ICE=remove RTP/AVPF full-rtcp-attribute direction=external direction=external replace-origin replace-session-connection record-call=yes label=Bleg_label "
+local rtpengine_offer_flag = "ICE=remove RTP/AVPF full-rtcp-attribute direction=external direction=external replace-origin replace-session-connection record-call=yes " .. rtpengine_codecs_flag .. " label=caller "
+local rtpengine_answer_flag = "ICE=remove RTP/AVPF full-rtcp-attribute direction=external direction=external replace-origin replace-session-connection record-call=yes label=callee "
 
 
 --[[--------------------------------------------------------------------------
@@ -188,36 +188,42 @@ function ksr_route_withindlg(request_method)
         --        KSR.log("info", ">>> Add stats header")
         --        KSR.hdr.append("X-RTP-Statistics: " .. KSR.pv.get("$avp(rtpstat)") .. "\r\n")
 
+        KSR.log("info", ">>> Set leg label")
+        KSR.pv.sets("$avp(mos_A_label)", "caller");
+        KSR.pv.sets("$avp(mos_B_label)", "callee");
+
         KSR.log("info", ">>> delete RTPengine \n ")
-        --        KSR.rtpengine.rtpengine_query0()
+        -- KSR.rtpengine.rtpengine_query("label=mos_A_label")
+        -- KSR.log("info", "mos_average_A_pv " .. KSR.pv.getvn("$avp(mos_A_label)", 0) .. "\n ")
+
         KSR.rtpengine.rtpengine_delete0()
 
-        --        KSR.log("info", " mos avg " .. KSR.pv.getvn("$avp(mos_average)", 0) .. "\n ")
-        --        KSR.log("info", " mos max " .. KSR.pv.getvn("$avp(mos_max)", 0) .. "\n ")
-        --        KSR.log("info", " mos min " .. KSR.pv.getvn("$avp(mos_min)", 0) .. "\n ")
-        --
-        --                KSR.log("info", "mos_average_packetloss_pv" .. KSR.pv.get("$avp(mos_average_packetloss)"))
-        --                KSR.log("info", "mos_average_jitter_pv" .. KSR.pv.get("$avp(mos_average_jitter)"))
-        --                KSR.log("info", "mos_average_roundtrip_pv" .. KSR.pv.get("$avp(mos_average_roundtrip)"))
-        --                KSR.log("info", "mos_average_samples_pv" .. KSR.pv.get("$avp(mos_average_samples)"))
-        --
-        --                KSR.log("info", "mos_min_pv" .. KSR.pv.get("$avp(mos_min)"))
-        --                KSR.log("info", "mos_min_at_pv" .. KSR.pv.get("$avp(mos_min_at)"))
-        --                KSR.log("info", "mos_min_packetloss_pv" .. KSR.pv.get("$avp(mos_min_packetloss)"))
-        --                KSR.log("info", "mos_min_jitter_pv" .. KSR.pv.get("$avp(mos_min_jitter)"))
-        --                KSR.log("info", "mos_min_roundtrip_pv" .. KSR.pv.get("$avp(mos_min_roundtrip)"))
+        KSR.log("info", " mos avg " .. KSR.pv.getvn("$avp(mos_average)", 0) .. "\n ")
+        KSR.log("info", " mos max " .. KSR.pv.getvn("$avp(mos_max)", 0) .. "\n ")
+        KSR.log("info", " mos min " .. KSR.pv.getvn("$avp(mos_min)", 0) .. "\n ")
 
-        --        KSR.log("info", "mos_A_label_pv " .. KSR.pv.getvn("$avp(mos_A_label)",1) .. "\n ")
-        --        KSR.log("info", "mos_average_packetloss_A_pv " .. KSR.pv.getvn("$avp(mos_average_packetloss_A)", 0) .. "\n ")
-        --        KSR.log("info", "mos_average_jitter_A_pv " .. KSR.pv.getvn("$avp(mos_average_jitter_A)", 0) .. "\n ")
-        --        KSR.log("info", "mos_average_roundtrip_A_pv " .. KSR.pv.getvn("$avp(mos_average_roundtrip_A)", 0) .. "\n ")
-        KSR.log("info", "mos_average_A_pv " .. KSR.pv.getvn("$avp(mos_average_A)", 0) .. "\n ")
+        KSR.log("info", "mos_average_packetloss_pv" .. KSR.pv.getvn("$avp(mos_average_packetloss)",0).. "\n ")
+        KSR.log("info", "mos_average_jitter_pv" .. KSR.pv.getvn("$avp(mos_average_jitter)",0).. "\n ")
+        KSR.log("info", "mos_average_roundtrip_pv" .. KSR.pv.getvn("$avp(mos_average_roundtrip)",0).. "\n ")
+        KSR.log("info", "mos_average_samples_pv" .. KSR.pv.getvn("$avp(mos_average_samples)",0).. "\n ")
 
-        --        KSR.log("info", "mos_B_label_pv " .. KSR.pv.getvn("$avp(mos_B_label)",1) .. "\n ")
-        --        KSR.log("info", "mos_average_packetloss_B_pv " .. KSR.pv.getvn("$avp(mos_average_packetloss_B)", 0) .. "\n ")
-        --        KSR.log("info", "mos_average_jitter_B_pv " .. KSR.pv.getvn("$avp(mos_average_jitter_B)", 0) .. "\n ")
-        --        KSR.log("info", "mos_average_roundtrip_B_pv " .. KSR.pv.getvn("$avp(mos_average_roundtrip_B)", 0) .. "\n ")
-        --        KSR.log("info", "mos_average_B_pv " .. KSR.pv.getvn("$avp(mos_average_B)", 0) .. "\n ")
+        KSR.log("info", "mos_min_pv" .. KSR.pv.getvn("$avp(mos_min)",0).. "\n ")
+        KSR.log("info", "mos_min_at_pv" .. KSR.pv.getvn("$avp(mos_min_at)",0).. "\n ")
+        KSR.log("info", "mos_min_packetloss_pv" .. KSR.pv.getvn("$avp(mos_min_packetloss)",0).. "\n ")
+        KSR.log("info", "mos_min_jitter_pv" .. KSR.pv.getvn("$avp(mos_min_jitter)",0).. "\n ")
+        KSR.log("info", "mos_min_roundtrip_pv" .. KSR.pv.getvn("$avp(mos_min_roundtrip)",0).. "\n ")
+
+        KSR.log("info", "mos_A_label_pv " .. KSR.pv.getvn("$avp(mos_A_label)", 1) .. "\n ")
+        KSR.log("info", "mos_average_packetloss_A_pv " .. KSR.pv.getvn("$avp(mos_average_packetloss_A)", 0) .. "\n ")
+        KSR.log("info", "mos_average_jitter_A_pv " .. KSR.pv.getvn("$avp(mos_average_jitter_A)", 0) .. "\n ")
+        KSR.log("info", "mos_average_roundtrip_A_pv " .. KSR.pv.getvn("$avp(mos_average_roundtrip_A)", 0) .. "\n ")
+        KSR.log("info", "mos_average_A_pv " .. KSR.pv.getvn("$avp(mos_A_label)", 0) .. "\n ")
+
+        KSR.log("info", "mos_B_label_pv " .. KSR.pv.getvn("$avp(mos_B_label)",1) .. "\n ")
+        KSR.log("info", "mos_average_packetloss_B_pv " .. KSR.pv.getvn("$avp(mos_average_packetloss_B)", 0) .. "\n ")
+        KSR.log("info", "mos_average_jitter_B_pv " .. KSR.pv.getvn("$avp(mos_average_jitter_B)", 0) .. "\n ")
+        KSR.log("info", "mos_average_roundtrip_B_pv " .. KSR.pv.getvn("$avp(mos_average_roundtrip_B)", 0) .. "\n ")
+        KSR.log("info", "mos_average_B_pv " .. KSR.pv.getvn("$avp(mos_average_B)", 0) .. "\n ")
     end
 
     if request_method == "INVITE" or request_method == "UPDATE" or request_method == "BYE" then
@@ -319,10 +325,6 @@ function ksr_route_relay(req_method)
 
         if bye_rcvd ~= "true" and KSR.textops.has_body_type("application/sdp") > 0 then
             KSR.log("info", "method contains sdp, creating offer to rtpengine \n")
-
-            KSR.log("info", ">>> Set leg label")
-            KSR.pv.sets("$avp(mos_A_label)", "Aleg_label");
-            KSR.pv.sets("$avp(mos_B_label)", "Bleg_label");
 
             if KSR.rtpengine.rtpengine_offer(rtpengine_offer_flag) > 0 then
                 KSR.log("info", "received success reply for rtpengine offer \n")
@@ -507,8 +509,6 @@ end
 
 function ksr_dialog_event(evname)
     if (evname == "dialog:end") or (evname == "dialog:failed") then
-        --        KSR.log("info", " In dialog event callback with event-name - " .. evname .. " query RTPengine")
-        --        KSR.rtpengine.rtpengine_query()
 
         local call_id = KSR.pv.get("$ci")
         if not call_id then
