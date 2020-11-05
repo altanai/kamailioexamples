@@ -15,7 +15,7 @@ kamailio configurations and associated files for various usecases and role that 
 * WebRTC WS SIP Server
 
 
-Note : Used kamailio v5.x , many old exmaples and sample configs from older wiki sources have been updated here too
+Note : Used kamailio v5.x , many old examples and sample configs from older wiki sources have been updated here too
 
 ## TLS protocol method
 

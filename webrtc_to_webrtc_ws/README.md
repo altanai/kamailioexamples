@@ -57,7 +57,7 @@ mkdir /etc/pki/CA/
 cp kamailio1_cert.pem /etc/pki/CA/
 cp privkey.pem /etc/pki/CA/
 ```
-make list of ca certs by finidng all cacerts accross root firectory and appending them to a catlist pem
+make list of ca certs by finding all cacerts across root directory and appending them to a catlist pem
 ```
 find / -name cacert.pem
 cat /usr/share/doc/libssl-doc/demos/cms/cacert.pem >> /home/ubuntu/catlist.pem
@@ -95,7 +95,7 @@ ref : https://loadmultiplier.com/node/236
 
 ## Kamcmd lookups
 
-Get ifno about open sockets 
+Get info about open sockets 
 ```sh
 kamcmd> core.sockets_list
 {
@@ -137,5 +137,20 @@ kamcmd> core.sockets_list
 }
 ```
 
-Ref:
-Websocket mod - http://kamailio.org/docs/modules/stable/modules/websocket.html
+
+## debugging help 
+
+**Issue1** error on save command
+```shell script
+		if (!save("location")) {
+			sl_reply_error();
+		}
+: cfg. parser: failed to find command save (params 1)
+```
+\
+**solution** rebuild registrar module , check the version of core kamailio and modules 
+
+
+
+**Ref** :
+- Websocket mod - http://kamailio.org/docs/modules/stable/modules/websocket.html

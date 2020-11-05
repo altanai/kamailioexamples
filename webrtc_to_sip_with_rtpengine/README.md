@@ -7,8 +7,8 @@ Features
 - location
 - nat - detect and manage
 - websocket and tls
-- sdp modifcation
-- rtpenine
+- sdp modification
+- rtpengine
 - mysql
 - presence - subscribe , notify
 
@@ -681,15 +681,20 @@ Aug 12 10:42:56 ip-172-31-90-251 rtpengine[2092]: ci=idtgqcr6auruvdmpii3g, creat
 
 ## Debug
 
-**Issuec1** :  0(2707) ERROR: tls [tls_init.c:839]: tls_check_sockets(): TLSs<x.x.x.x:5061>: No listening socket found
+**Issue 1** : TLS issues  
+```
+0(2707) ERROR: tls [tls_init.c:839]: tls_check_sockets(): TLSs<x.x.x.x:5061>: No listening socket found
  0(2707) ERROR: <core> [core/sr_module.c:898]: init_mod(): Error while initializing module tls (/usr/local/lib64/kamailio/modules/tls.so)
 ERROR: error while initializing modules
 CRITICAL: tls [tls_locking.c:103]: locking_f(): locking (callback): invalid lock number:  1 (range 0 - 0), called from err.c:375
  0(2673) ERROR: <core> [core/daemonize.c:303]: daemonize(): Main process exited before writing to pipe
-**Solution** : check for lsietning socket address 
+```
+\
+**Solution** : check for listening socket address 
 
 **Issue 2** :  tls_err_ret(): TLS accept:error:14094416:SSL routines:ssl3_read_bytes:sslv3 alert certificate unknown
 tcp_read_req(): ERROR: tcp_read_req: error reading - c: 0x7ff63bb55e58 r: 0x7ff63bb55ed8 (-1)
+\
 **Solution** : In tls.cfg
 ```
 [client:default]
@@ -700,11 +705,14 @@ Can also changes the TLS methods to SSLv23 so that any of the SSLv2, SSLv3 and T
 
 **Issue 3** : call between sip and webrtc endppints complain on SDES and DTLS-SRTP
 JsSIP:ERROR:RTCSession emit "peerconnection:setremotedescriptionfailed" [error:DOMException: Failed to execute 'setRemoteDescription' on 'RTCPeerConnection': Failed to set remote offer sdp: SDES and DTLS-SRTP cannot be enabled at the same time.]
+\
 **Solution** : since Webrtc supports ICE/DTLS-SRTP while common sip endpoints like softphones bria , xlite , zoiper do not , we need to manage via rtpengine the briding and interconversion.
 while calling from sip phone to webrtc endpoints , keep DTLS passive , off SDES and force ICE. Use RTP/AVP profile 
 while calling from webrtc endpoint to sip phone , off DTLS and SDES and remove ICE . Use RTP/SAVPF profile
 
 **Issue 4** :SRTP output wanted, but no crypto suite was negotiated
+\
+**Solution** --tbd
 
-Ref :
-TLS Module - https://kamailio.org/docs/modules/devel/modules/tls.html
+**Ref** :
+- TLS Module - https://kamailio.org/docs/modules/devel/modules/tls.html
