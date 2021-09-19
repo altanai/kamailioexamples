@@ -1,4 +1,4 @@
-# Monitaring and auditing sip traffic 
+# Monitoring and auditing SIP traffic 
 
 Homer and homer encapsulation protocl (HEP) integration with sip server brings the capabilities to 
 SIP/SDP payload retention with precise timestamping
