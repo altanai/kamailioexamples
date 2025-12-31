@@ -1,1 +1,0 @@
-# BareBone SIP Server 
