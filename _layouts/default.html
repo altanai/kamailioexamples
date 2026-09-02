@@ -33,7 +33,7 @@
       <h2>{{ category.name }}</h2>
       <ul>
         {%- for item in category.items %}
-        {%- assign item_url = item.path | prepend: '/' | prepend: site.baseurl %}
+        {%- assign item_url = item.path | prepend: '/' %}
         <li{% if page.url == item_url %} class="current"{% endif %}>
           <a href="{{ item.path | prepend: '/' | relative_url }}">{{ item.title }}</a>
         </li>
