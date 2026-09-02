@@ -20,14 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Configure Pages
-        id: pages
-        uses: actions/configure-pages@v5
-        with:
-          static_site_generator: jekyll
-
+      # actions/configure-pages is deliberately not used: it crashes on the Node 24
+      # runners, and url/baseurl are already pinned in _config.yml.
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
