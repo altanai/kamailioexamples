@@ -2,6 +2,8 @@
 
 A comprehensive collection of Kamailio configurations and examples for various use cases and roles that Kamailio can serve.
 
+Browsable version of this collection: **https://altanai.github.io/kamailioexamples/**
+
 ## Overview
 
 This repository contains production-ready and example Kamailio configurations demonstrating:
@@ -23,7 +25,7 @@ This repository contains production-ready and example Kamailio configurations de
 ### Core SIP Features
 - **[Barebone_SIPServer](Barebone_SIPServer/)** - Minimal SIP server with basic message handling, no relay/proxy/NAT
 - **[REGISTER handle](REGISTER%20handle/)** - REGISTER request handling with 200 OK responses
-- **[register_and_userlocation](register_and_userlocation/)** - User registration and USRLOC database management
+- **[register_userlocation](register_userlocation/)** - User registration and USRLOC database management
 - **[stateful_transaction_handle](stateful_transaction_handle/)** - Stateful transaction processing
 - **[stateful_dialog_handle](stateful_dialog_handle/)** - Stateful dialog management
 - **[Relay_with_flags](Relay_with_flags/)** - SIP message relay with flag-based routing

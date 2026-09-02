@@ -1,0 +1,185 @@
+# Single source of truth for the site navigation and the landing page catalogue.
+# `path` is relative to the site root and must end with a slash.
+
+- name: Core SIP features
+  id: core
+  blurb: Message handling, registration, transactions, dialogs and routing basics.
+  items:
+    - title: Barebone SIP server
+      path: Barebone_SIPServer/
+      desc: Minimal SIP server that parses and answers messages, with no relay, proxy or NAT logic.
+    - title: REGISTER handling
+      path: REGISTER%20handle/
+      desc: Answering REGISTER requests with 200 OK without touching a location database.
+    - title: Register and user location
+      path: register_userlocation/
+      desc: Storing and looking up contacts in the USRLOC service.
+    - title: Stateful transactions
+      path: stateful_transaction_handle/
+      desc: Transaction stateful processing with the tm module.
+    - title: Stateful dialogs
+      path: stateful_dialog_handle/
+      desc: Tracking calls end to end with the dialog module.
+    - title: Relay with flags
+      path: Relay_with_flags/
+      desc: Relaying requests and branching behaviour off per-transaction flags.
+    - title: Record routing
+      path: record_routing/
+      desc: Staying in the path of sequential in-dialog requests.
+    - title: Topology hiding
+      path: Topology_hiding/
+      desc: Masking internal routing information from the far end.
+
+- name: Routing and proxying
+  id: routing
+  blurb: Distributing and steering traffic between endpoints, domains and carriers.
+  items:
+    - title: SIP load balancer
+      path: Loadbalancer_SIP_proxy/
+      desc: Dispatcher based distribution across a pool of SIP endpoints.
+    - title: Edge proxy
+      path: edge_proxy/
+      desc: Border facing proxy for inter-domain routing.
+    - title: Private identities
+      path: Private_Ids/
+      desc: Handling P-Asserted-Identity and related private headers.
+    - title: Carrier routing
+      path: carrier/
+      desc: Least cost and carrier selection with the carrierroute module.
+
+- name: NAT and media
+  id: media
+  blurb: Traversing NAT and relaying RTP through RTPProxy or RTPEngine.
+  items:
+    - title: NAT traversal
+      path: nat/
+      desc: Detecting NATed clients and fixing contacts, Via and SDP.
+    - title: NAT handling in Lua
+      path: Lua_Nat_handle/
+      desc: KEMI Lua NAT logic split into reusable helper modules.
+    - title: RTPProxy
+      path: RTPProxy/
+      desc: Media relay with the legacy RTPProxy engine.
+    - title: RTPEngine media proxy
+      path: RTPEngine_media_proxy/
+      desc: RTPEngine as media proxy, including the systemd unit.
+    - title: RTPEngine bridge on failure
+      path: rtpengine_bridge_on_fail/
+      desc: Falling back to a second media node when the first one fails.
+
+- name: WebRTC
+  id: webrtc
+  blurb: Browsers talking to browsers and to the PSTN over WSS and DTLS-SRTP.
+  items:
+    - title: WebRTC to WebRTC over WebSocket
+      path: webrtc_to_webrtc_ws/
+      desc: WSS registrar and signalling for browser to browser calls.
+    - title: WebRTC to WebRTC with RTPEngine
+      path: webrtc_to_webrtc_RTPengine/
+      desc: Browser to browser calls with RTPEngine handling DTLS-SRTP.
+    - title: WebRTC to SIP
+      path: webrtc_to_sip_with_rtpengine/
+      desc: Gatewaying browser calls to plain SIP endpoints.
+    - title: WebRTC to SIP on IPv4 and IPv6
+      path: webrtc_to_sip_ipv4_ipv6_with_rtpengine/
+      desc: Dual stack gateway with address family bridging in the media plane.
+    - title: WebRTC with PostgreSQL and RTPEngine
+      path: psql_webrtc_rtpengine/
+      desc: Full WebRTC stack backed by PostgreSQL.
+    - title: WebRTC with PostgreSQL and RTPProxy
+      path: psql_webrtc_rtpproxy/
+      desc: The same stack using RTPProxy for media.
+
+- name: Lua and KEMI scripting
+  id: lua
+  blurb: Moving the routing logic out of kamailio.cfg and into Lua.
+  items:
+    - title: Minimal Lua config
+      path: Lua_kamailio_short/
+      desc: The smallest working KEMI Lua routing script.
+    - title: Load balancer in Lua
+      path: Lua_load_balancer/
+      desc: Endpoint selection written as Lua functions.
+    - title: SBC with authentication
+      path: Lua_sbc_with_auth/
+      desc: Session border controller logic with digest authentication.
+    - title: SBC with authentication and encryption
+      path: Lua_sbc_with_auth_encryption/
+      desc: The authenticated SBC extended with TLS and SRTP.
+    - title: Registrar with permissions
+      path: Lua_Registrar_permission_auth/
+      desc: Authorising registrations against a permission set.
+    - title: RTPEngine daisy chaining
+      path: Lua_RtpEngine_daisyChaining/
+      desc: Passing media through more than one RTPEngine instance.
+    - title: MOS with RTPEngine
+      path: Lua_Rtpengine_MOS/
+      desc: Reading RTCP derived quality scores back into the routing script.
+    - title: Stateful dialogs with RTPEngine
+      path: Lua_stateful_dialog_rtpengine/
+      desc: Dialog tracking plus media control from Lua.
+    - title: SQLite from Lua
+      path: Lua_dbsqlite/
+      desc: Querying an SQLite backend inside the routing script.
+
+- name: Call handling and accounting
+  id: calls
+  blurb: Forking, early media, CDRs and voice quality measurement.
+  items:
+    - title: Forking
+      path: forking/
+      desc: Parallel and serial forking towards several destinations.
+    - title: Early media
+      path: early_media_handle/
+      desc: Dealing with 183 Session Progress and early SDP.
+    - title: Accounting
+      path: accounting/
+      desc: CDR generation with the acc module.
+    - title: MOS with the acc module
+      path: mos_cdr_accmodule/
+      desc: Writing quality scores alongside the CDR record.
+    - title: MOS from RTP statistics
+      path: mos_rtpstats_rtpengine/
+      desc: Deriving MOS from RTCP reports collected by RTPEngine.
+
+- name: Databases
+  id: db
+  blurb: Persisting subscribers, location and state.
+  items:
+    - title: MySQL user storage
+      path: mysql_user_stoarge/
+      desc: Subscriber storage on MySQL, including kamctlrc setup.
+    - title: PostgreSQL location storage
+      path: psql_location_storage/
+      desc: USRLOC persisted in PostgreSQL.
+    - title: Redis
+      path: redis_db/
+      desc: Location and accounting records held in Redis.
+
+- name: Security, tracing and control
+  id: ops
+  blurb: TLS, packet capture and remote control interfaces.
+  items:
+    - title: TLS only
+      path: TLSonly/
+      desc: TLS transport configuration and verification with openssl s_client.
+    - title: SIP capture over HEP
+      path: sipcapture_siptrace_hep/
+      desc: Trace node and capture node using the HEP protocol.
+    - title: HOMER and heplify-server
+      path: siptrace_homer_heplifyserver/
+      desc: A full capture stack with HOMER, heplify-server and MariaDB.
+    - title: JSON-RPC
+      path: jsonrpc_remoteprocesscalls/
+      desc: Driving Kamailio over the JSON-RPC control interface.
+    - title: Async call control with EVAPI
+      path: evapi_async_callcontrol/
+      desc: Handing routing decisions to an external Node.js application.
+
+- name: Testing
+  id: testing
+  blurb: Driving the configurations with synthetic traffic.
+  items:
+    - title: SIPp scenarios
+      path: sipp/
+      desc: UAC and UAS scenarios for re-INVITE, UPDATE, CANCEL, BYE and failure cases.

@@ -1,0 +1,13 @@
+# Standalone notes that are not tied to a single example directory.
+- title: Agents and user agents
+  path: Agents.html
+  desc: SIP user agents, B2BUAs, call centre and bot agents, and how they map onto these configurations.
+- title: kamctl debugging
+  path: kamctl_debug.html
+  desc: Inspecting and manipulating a running server with kamctl.
+- title: kamcmd debugging
+  path: kamcmd_debug.html
+  desc: Runtime RPC commands with kamcmd.
+- title: sipsak debugging
+  path: sipsak_debug.html
+  desc: Probing a server with sipsak.

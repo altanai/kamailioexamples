@@ -1,0 +1,59 @@
+title: Kamailio Examples
+tagline: Configurations and Lua scripts for the roles Kamailio can play
+description: >-
+  A catalogue of Kamailio v5.x configurations covering SIP routing, registration,
+  NAT traversal, WebRTC, RTPEngine media handling, load balancing, SBC, accounting,
+  MOS quality metrics, TLS and Lua/KEMI scripting.
+url: https://altanai.github.io
+baseurl: /kamailioexamples
+
+repository: altanai/kamailioexamples
+github_repo_url: https://github.com/altanai/kamailioexamples
+
+plugins:
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-relative-links
+  - jekyll-titles-from-headings
+  - jekyll-seo-tag
+
+# Render every README.md as the index of its directory so that links such as
+# `nat/` resolve on the published site exactly as they do on GitHub.
+readme_index:
+  enabled: true
+  remove_originals: true
+  with_frontmatter: true
+
+relative_links:
+  enabled: true
+  collections: false
+
+titles_from_headings:
+  enabled: true
+  strip_title: true
+  collections: false
+
+optional_front_matter:
+  remove_originals: true
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+# Binaries, captures and keys are kept in the repository but are not part of the site.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - node_modules
+  - .jekyll-cache
+  - evapi_async_callcontrol/package-lock.json
+  - Lua_Rtpengine_MOS/sample_media_files
+  - mos_rtpstats_rtpengine/al1.pcap
+  - mos_rtpstats_rtpengine/g711a.pcap
+  - mos_rtpstats_rtpengine/g711pcma.pcap
+  - mos_rtpstats_rtpengine/rtp_example.raw
+  - rtpengine_bridge_on_fail/jssipdemo/cert.pem
+  - rtpengine_bridge_on_fail/jssipdemo/key.pem

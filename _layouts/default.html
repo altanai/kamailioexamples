@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- seo -%}
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <span class="brand-mark">SIP</span>
+      <span class="brand-text">
+        <strong>{{ site.title }}</strong>
+        <small>{{ site.tagline }}</small>
+      </span>
+    </a>
+    <nav class="masthead-links">
+      <a href="{{ '/' | relative_url }}">Home</a>
+      <a href="{{ '/Agents.html' | relative_url }}">Agents</a>
+      <a href="{{ site.github_repo_url }}">GitHub</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false">Examples</button>
+  </div>
+</header>
+
+<div class="page">
+  <aside class="sidebar" id="sidebar">
+    {%- for category in site.data.examples %}
+    <div class="nav-group">
+      <h2>{{ category.name }}</h2>
+      <ul>
+        {%- for item in category.items %}
+        {%- assign item_url = item.path | prepend: '/' | prepend: site.baseurl %}
+        <li{% if page.url == item_url %} class="current"{% endif %}>
+          <a href="{{ item.path | prepend: '/' | relative_url }}">{{ item.title }}</a>
+        </li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- endfor %}
+    <div class="nav-group">
+      <h2>Notes</h2>
+      <ul>
+        {%- for ref in site.data.references %}
+        <li><a href="{{ ref.path | prepend: '/' | relative_url }}">{{ ref.title }}</a></li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </aside>
+
+  <main class="content">
+    {%- unless page.hide_title %}
+    <h1 class="page-title">{{ page.title | default: page.name }}</h1>
+    {%- endunless %}
+    {{ content }}
+
+    {%- if page.path and page.url != '/' %}
+    <p class="source-link">
+      <a href="{{ site.github_repo_url }}/blob/master/{{ page.path }}">View this page&rsquo;s source on GitHub</a>
+    </p>
+    {%- endif %}
+  </main>
+</div>
+
+<footer class="site-footer">
+  <p>
+    Kamailio configurations by <a href="https://github.com/altanai">altanai</a>.
+    Examples target Kamailio v5.x &middot;
+    <a href="{{ site.github_repo_url }}">Source repository</a> &middot;
+    <a href="https://kamailio.org/docs/">Kamailio documentation</a>
+  </p>
+</footer>
+
+<script>
+  (function () {
+    var button = document.querySelector('.nav-toggle');
+    var sidebar = document.getElementById('sidebar');
+    if (!button || !sidebar) { return; }
+    button.addEventListener('click', function () {
+      var open = sidebar.classList.toggle('open');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  })();
+</script>
+
+</body>
+</html>
