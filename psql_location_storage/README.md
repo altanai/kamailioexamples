@@ -2,6 +2,7 @@
 
 ## Database all tables list create
 
+```text
  Schema |      Name       | Type  |  Owner   
 --------+-----------------+-------+----------
  public | acc             | table | postgres
@@ -33,3 +34,4 @@
  public | uri             | table | postgres
  public | usr_preferences | table | postgres
  public | version         | table | postgres
+```

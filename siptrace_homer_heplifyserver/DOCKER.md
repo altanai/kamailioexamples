@@ -18,6 +18,7 @@ Flexible , Lightweight , Interchangeable , Portable , Scalable , Stackable
 
 ## Docker commands 
 
+```text
 Options:
       --config string      Location of client config files (default "/Users/altanaibisht/.docker")
   -D, --debug              Enable debug mode
@@ -88,7 +89,7 @@ Commands:
   update      Update configuration of one or more containers
   version     Show the Docker version information
   wait        Block until one or more containers stop, then print their exit codes
-  
+```
 
 see all docker images 
 ```

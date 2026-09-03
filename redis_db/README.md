@@ -244,7 +244,7 @@ make[2]: *** [topos_redis_mod.o] Error 1
 
 **Solution** Install redis libs
 ```bash
-
+apt-get install libhiredis-dev
 ```
 
 

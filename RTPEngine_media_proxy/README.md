@@ -270,6 +270,7 @@ Simillarly for answer
 
 ## RTP engine options 
 
+```text
   -v, --version                                               Print build time and exit
   --config-file=FILE                                          Load config from this file
   --config-section=STRING                                     Config file section to use
@@ -367,6 +368,7 @@ based on mysql
   --mysql-user=USERNAME                                       MySQL connection credentials
   --mysql-pass=PASSWORD                                       MySQL connection credentials
   --mysql-query=STRING                                        MySQL select query
+```
 
 ## Manually Build RTPengine from Source 
 

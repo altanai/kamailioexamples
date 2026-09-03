@@ -11,6 +11,8 @@ transactional integrity
 multiversion concurrency control
 
 ### Usage:
+
+```text
   psql [OPTION]... [DBNAME [USERNAME]]
 
 ### General options:
@@ -62,6 +64,7 @@ Connection options:
   -U, --username=USERNAME  database user name (default: "root")
   -w, --no-password        never prompt for password
   -W, --password           force password prompt (should happen automatically)
+```
 
 ### To list all postgress related packages 
 

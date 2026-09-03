@@ -15,10 +15,12 @@ cp evapi.so /usr/local/lib64/kamailio/modules/
 
 **Issue 2** evapi_dispatch.c:34:10: fatal error: 'ev.h' file not found
 **Solution** Install libev
-```brew install libev ```
+```bash
+brew install libev
+```
 or for ubuntu systems
 ```bash
-
+apt-get install libev-dev
 ```
 
 **Issue 3** could not find module <mi_fifo> in </usr/local/lib64/kamailio/modules/>

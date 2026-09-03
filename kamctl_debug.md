@@ -4,6 +4,7 @@
 
 Existing commands:
 
+```text
  -- command 'start|stop|restart|trap'
 
  trap ............................... trap with gdb Kamailio processes
@@ -232,7 +233,12 @@ Existing commands:
  -- command 'kamcmd'
 
  kamcmd ............................. send command through kamcmd
+```
 
+`tls.info` is an RPC command rather than a kamctl one, so kamctl answers with the same usage
+listing rather than the certificate details:
+
+```text
 root@ip-10-130-74-151:/home/ubuntu# kamctl tls.info
 /usr/local/sbin/kamctl 5.2.0
 
@@ -466,9 +472,11 @@ Existing commands:
  -- command 'kamcmd'
 
  kamcmd ............................. send command through kamcmd
-
-
 ```
+
+## kamctl stats
+
+```text
 >kamctl stats 
 
 kamctl stats
