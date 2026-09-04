@@ -202,6 +202,16 @@ code, pre, tt {
 
 .content pre code { background: none; border: 0; padding: 0; color: inherit; font-size: inherit; }
 
+.content .mermaid {
+  margin: 1.6em 0;
+  padding: 12px;
+  overflow-x: auto;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-align: center;
+}
+
 .content hr { border: 0; border-top: 1px solid var(--line); margin: 2.2em 0; }
 
 .source-link {

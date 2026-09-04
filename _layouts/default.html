@@ -74,14 +74,34 @@
   </p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script>
   (function () {
     var button = document.querySelector('.nav-toggle');
     var sidebar = document.getElementById('sidebar');
-    if (!button || !sidebar) { return; }
-    button.addEventListener('click', function () {
-      var open = sidebar.classList.toggle('open');
-      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (button && sidebar) {
+      button.addEventListener('click', function () {
+        var open = sidebar.classList.toggle('open');
+        button.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+
+    // jekyll-build-pages / Rouge wraps ```mermaid as .language-mermaid pre code.
+    // mermaid only auto-renders nodes with class="mermaid", so rewrite those blocks.
+    if (typeof mermaid === 'undefined') { return; }
+    document.querySelectorAll('div.language-mermaid').forEach(function (block) {
+      var code = block.querySelector('code');
+      if (!code) { return; }
+      var diagram = document.createElement('div');
+      diagram.className = 'mermaid';
+      diagram.textContent = code.textContent;
+      block.replaceWith(diagram);
+    });
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'neutral',
+      securityLevel: 'strict',
+      flowchart: { htmlLabels: false }
     });
   })();
 </script>
