@@ -83,7 +83,7 @@ Kamailio → Agent: 200 OK (stores location in USRLOC)
 ```
 
 **Related Examples:**
-- [register_and_userlocation](register_and_userlocation/) - Basic registration
+- [register_userlocation](register_userlocation/) - Basic registration
 - [Lua_Registrar_permission_auth](Lua_Registrar_permission_auth/) - Auth-based registration
 
 ### Call Routing to Agents
@@ -171,7 +171,7 @@ if method == "INVITE" then
 end
 ```
 
-**Full Example:** [register_and_userlocation](register_and_userlocation/kamailio_register_userloc.cfg)
+**Full Example:** [register_userlocation](register_userlocation/kamailio_register_userloc.cfg)
 
 ### Example 2: Multiple Agent Load Balancing
 
@@ -292,7 +292,7 @@ Caller → Kamailio → Agent
 6. Agent sends BYE to end call
 ```
 
-**Examples:** [Barebone_SIPServer](Barebone_SIPServer/), [register_and_userlocation](register_and_userlocation/)
+**Examples:** [Barebone_SIPServer](Barebone_SIPServer/), [register_userlocation](register_userlocation/)
 
 ### Pattern 2: IVR → Agent Routing
 
